@@ -8,16 +8,18 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include <sys/select.h>
-#include "common.h"
+#include <pthread.h>
+#include "common.h" // Make sure this contains relevant definitions such as MAX_CLIENTS, SERVER_PORT, etc.
 
 #define TRUE 1
 
 int client_socket[MAX_CLIENTS];
+pthread_mutex_t client_socket_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 // Function prototypes
 void initialize_server(int *master_socket, struct sockaddr_in *address);
 void accept_new_connection(int master_socket, struct sockaddr_in *address);
-void handle_client_message(int client_fd);
+void *handle_client_message(void *client_fd_ptr);
 void echo_to_all_clients(int sender_fd, char *buffer, int buf_size);
 
 int main() {
@@ -42,11 +44,13 @@ int main() {
         int max_sd = master_socket;
 
         // Add child sockets to set
+        pthread_mutex_lock(&client_socket_mutex);
         for (i = 0; i < MAX_CLIENTS; i++) {
             sd = client_socket[i];
             if (sd > 0) FD_SET(sd, &readfds);
             if (sd > max_sd) max_sd = sd;
         }
+        pthread_mutex_unlock(&client_socket_mutex);
 
         // Wait for an activity on one of the sockets
         activity = select(max_sd + 1, &readfds, NULL, NULL, NULL);
@@ -63,7 +67,13 @@ int main() {
         for (i = 0; i < MAX_CLIENTS; i++) {
             sd = client_socket[i];
             if (FD_ISSET(sd, &readfds)) {
-                handle_client_message(sd);
+                pthread_t thread_id;
+                int *new_sock = malloc(sizeof(int));
+                *new_sock = sd;
+                if (pthread_create(&thread_id, NULL, handle_client_message, (void*)new_sock) < 0) {
+                    perror("could not create thread");
+                    free(new_sock);
+                }
             }
         }
     }
@@ -115,6 +125,7 @@ void accept_new_connection(int master_socket, struct sockaddr_in *address) {
     printf("New connection, socket fd is %d, ip is: %s, port: %d\n", new_socket, inet_ntoa(address->sin_addr), ntohs(address->sin_port));
 
     // Add new socket to array of sockets
+    pthread_mutex_lock(&client_socket_mutex);
     for (int i = 0; i < MAX_CLIENTS; i++) {
         if (client_socket[i] == 0) {
             client_socket[i] = new_socket;
@@ -122,9 +133,12 @@ void accept_new_connection(int master_socket, struct sockaddr_in *address) {
             break;
         }
     }
+    pthread_mutex_unlock(&client_socket_mutex);
 }
 
-void handle_client_message(int client_fd) {
+void *handle_client_message(void *client_fd_ptr) {
+    int client_fd = *(int*)client_fd_ptr;
+    free(client_fd_ptr);
     char buffer[BUFFER_SIZE];
     int valread = read(client_fd, buffer, BUFFER_SIZE - 1);
     if (valread == 0) {
@@ -136,22 +150,27 @@ void handle_client_message(int client_fd) {
 
         // Close the socket and mark as 0 in list for reuse
         close(client_fd);
+        pthread_mutex_lock(&client_socket_mutex);
         for (int i = 0; i < MAX_CLIENTS; i++) {
             if (client_socket[i] == client_fd) {
                 client_socket[i] = 0;
                 break;
             }
         }
+        pthread_mutex_unlock(&client_socket_mutex);
     } else {
         buffer[valread] = '\0';
         echo_to_all_clients(client_fd, buffer, valread);
     }
+    return NULL;
 }
 
 void echo_to_all_clients(int sender_fd, char *buffer, int buf_size) {
+    pthread_mutex_lock(&client_socket_mutex);
     for (int i = 0; i < MAX_CLIENTS; i++) {
         if (client_socket[i] != 0 && client_socket[i] != sender_fd) {
             send(client_socket[i], buffer, buf_size, 0);
         }
     }
+    pthread_mutex_unlock(&client_socket_mutex);
 }
