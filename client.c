@@ -7,107 +7,77 @@
 #include <netinet/in.h>
 #include <pthread.h>
 #include "common.h"
+#include "message.h"
 
 char username[USERNAME_LEN];
 int sock; // Socket descriptor
 
 void *receive_message(void *sockfd_ptr)
 {
-    int sock = *(int *)sockfd_ptr; // Cast the socket file descriptor to the correct type
-
+    int sock = *(int *)sockfd_ptr;
     while (1)
     {
         uint32_t msg_length_net, msg_length;
-        // Read the message length first
-        int read_status = read(sock, &msg_length_net, sizeof(msg_length_net));
-        if (read_status <= 0)
+        // Initial read for the message length
+        if (read(sock, &msg_length_net, sizeof(msg_length_net)) <= 0)
         {
             printf("\nDisconnected from server.\n");
             close(sock);
             exit(EXIT_SUCCESS);
         }
-
-        // Convert from network byte order to host byte order
         msg_length = ntohl(msg_length_net);
 
         if (msg_length >= BUFFER_SIZE)
         {
-            // Error: Message too long, continue to listen for next message
-            fprintf(stderr, "Error: Received message exceeds buffer size.\n");
             continue;
         }
 
         char buffer[BUFFER_SIZE] = {0};
-        read_status = read(sock, buffer, msg_length);
-        if (read_status > 0)
+        size_t total_read = 0;
+        while (total_read < msg_length)
         {
-            buffer[read_status] = '\0'; // Ensure string is null-terminated
-
-            // Attempt to parse the received message
-            char timestamp[20 + 1];    // Buffer for timestamp
-            char user[USERNAME_LEN];   // Buffer for username
-            char message[BUFFER_SIZE]; // Buffer for message
-
-            // Parse the message assuming format: "timestamp=YYYY-MM-DD HH:MM:SS;user=username;message=text"
-            if (sscanf(buffer, "timestamp=%20[^;];user=%31[^;];message=%1023[^\n]", timestamp, user, message) == 3)
+            ssize_t read_status = read(sock, buffer + total_read, msg_length - total_read);
+            if (read_status > 0)
             {
-                // Print the formatted message if parsing is successful
-                printf("\n[%s] %s: %s\n", timestamp, user, message);
+                total_read += read_status;
             }
             else
             {
-                // If parsing fails, print the raw message
-                printf("\nFailed to parse message: %s\n", buffer);
+                // Handle read error or disconnect
+                perror("Receive failed");
+                exit(EXIT_FAILURE);
             }
-            // Print the prompt again
-            printf("%s> ", username);
-            fflush(stdout);
         }
-        else
-        {
-            // Handle read error or disconnect
-            perror("Receive failed");
-            exit(EXIT_FAILURE);
-        }
+        buffer[msg_length] = '\0'; // Ensure null-terminated
+
+        Message msg;
+        deserialize_message(buffer, &msg); // Use the deserialize function
+
+        // Print the parsed message
+        printf("\n[%s] %s: %s\n", msg.timestamp, msg.user, msg.content);
+        printf("%s> ", username);
+        fflush(stdout);
     }
-    return NULL; // Should never reach here
+    return NULL;
 }
 
 void send_message(const char *message_content)
 {
-    // Get the current timestamp
-    time_t rawtime;
-    struct tm *timeinfo;
-    char timestamp[20]; // Enough to hold "[YYYY-MM-DD HH:MM:SS]"
+    Message msg;
+    create_message(&msg, username, message_content); // Create a message struct
+    char *serialized_msg = serialize_message(&msg);  // Serialize the message
 
-    time(&rawtime);
-    timeinfo = localtime(&rawtime);
-    strftime(timestamp, sizeof(timestamp), "%Y-%m-%d %H:%M:%S", timeinfo);
+    uint32_t msg_length = strlen(serialized_msg);
+    uint32_t net_msg_length = htonl(msg_length);
 
-    // Format the message
-    char formatted_message[BUFFER_SIZE];
-    snprintf(formatted_message, BUFFER_SIZE, "timestamp=%s;user=%s;message=%s", timestamp, username, message_content);
+    write(sock, &net_msg_length, sizeof(net_msg_length));
+    write(sock, serialized_msg, msg_length);
 
-    // Send the formatted message as before
-    uint32_t msg_length = strlen(formatted_message);
-    uint32_t net_msg_length = htonl(msg_length); // Convert to network byte order
-
-    write(sock, &net_msg_length, sizeof(net_msg_length)); // Send message length first
-    write(sock, formatted_message, msg_length);           // Then send the message
-    printf("Sent message to server: %s\n", formatted_message);
+    free_serialized_message(serialized_msg); // Free the allocated serialized message
 }
 
-int main(int argc, char *argv[])
+int connect_to_server(const char *server_address, const char *server_port)
 {
-    if (argc != 4)
-    {
-        fprintf(stderr, "Usage: %s <server_address> <server_port> <client_username>\n", argv[0]);
-        exit(EXIT_FAILURE);
-    }
-
-    strncpy(username, argv[3], USERNAME_LEN);
-    username[USERNAME_LEN - 1] = '\0'; // Ensure null termination
-
     struct sockaddr_in server_addr;
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0)
@@ -118,8 +88,8 @@ int main(int argc, char *argv[])
 
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(atoi(argv[2]));
-    if (inet_pton(AF_INET, argv[1], &server_addr.sin_addr) <= 0)
+    server_addr.sin_port = htons(atoi(server_port));
+    if (inet_pton(AF_INET, server_address, &server_addr.sin_addr) <= 0)
     {
         printf("\nInvalid address/ Address not supported \n");
         return -1;
@@ -140,17 +110,48 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
+    return 0;
+}
+
+void close_connection()
+{
+    close(sock);
+    exit(EXIT_SUCCESS);
+}
+
+int main(int argc, char *argv[])
+{
+    if (argc != 4)
+    {
+        fprintf(stderr, "Usage: %s <server_address> <server_port> <client_username>\n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
+
+    strncpy(username, argv[3], USERNAME_LEN);
+    username[USERNAME_LEN - 1] = '\0'; // Ensure null termination
+
+    connect_to_server(argv[1], argv[2]);
+
+    pthread_t recv_thread;
+    if (pthread_create(&recv_thread, NULL, receive_message, (void *)&sock) != 0)
+    {
+        perror("pthread_create failed");
+        return EXIT_FAILURE;
+    }
+
     char message[BUFFER_SIZE];
     while (1)
     {
-        printf("%s> ", username); // Show the username as part of the prompt
+        printf("%s> ", username);
         fflush(stdout);
         if (fgets(message, BUFFER_SIZE, stdin) != NULL)
         {
+            // Remove newline at the end of input
+            message[strcspn(message, "\n")] = 0;
             send_message(message);
         }
     }
 
-    close(sock);
+    close_connection();
     return 0;
 }

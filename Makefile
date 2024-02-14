@@ -8,7 +8,7 @@ server: server.c message.c
 	$(CC) $(CFLAGS) -o server server.c message.c
 
 client: client.c
-	$(CC) $(CFLAGS) $(PTHREAD) -o client client.c
+	$(CC) $(CFLAGS) $(PTHREAD) -o client client.c message.c
 
 clean:
 	rm -f server client
