@@ -9,7 +9,7 @@
 #include <errno.h>
 #include <sys/select.h>
 #include <pthread.h>
-#include "common.h" // Make sure this contains relevant definitions such as MAX_CLIENTS, SERVER_PORT, etc.
+#include "common.h"
 
 #define TRUE 1
 
@@ -78,6 +78,20 @@ int main() {
         }
     }
 
+    // On normal exit, close the server socket
+    close(master_socket);
+
+    // Free the mutex
+    pthread_mutex_destroy(&client_socket_mutex);
+
+    // Free the memory allocated for the client sockets
+    for (i = 0; i < MAX_CLIENTS; i++) {
+        if (client_socket[i] != 0) {
+            close(client_socket[i]);
+        }
+    }
+
+    // Exit the program
     return 0;
 }
 
@@ -157,6 +171,8 @@ void *handle_client_message(void *client_fd_ptr) {
                 break;
             }
         }
+
+        // Free the mutex
         pthread_mutex_unlock(&client_socket_mutex);
     } else {
         buffer[valread] = '\0';

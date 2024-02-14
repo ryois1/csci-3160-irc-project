@@ -14,9 +14,12 @@ void current_timestamp(char* ts) {
 
 void create_message(Message* msg, const char* user, const char* content) {
     current_timestamp(msg->timestamp);
-    strncpy(msg->user, user, sizeof(msg->user));
-    strncpy(msg->content, content, sizeof(msg->content));
+    strncpy(msg->user, user, sizeof(msg->user) - 1);
+    msg->user[sizeof(msg->user) - 1] = '\0'; // Ensure null termination
+    strncpy(msg->content, content, sizeof(msg->content) - 1);
+    msg->content[sizeof(msg->content) - 1] = '\0'; // Ensure null termination
 }
+
 
 char* serialize_message(const Message* msg) {
     char* serialized = malloc(20 + 1 + USERNAME_LEN + 1 + BUFFER_SIZE + 1); // timestamp + user + content + extra for format

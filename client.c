@@ -148,10 +148,15 @@ int main(int argc, char *argv[])
         {
             // Remove newline at the end of input
             message[strcspn(message, "\n")] = 0;
-            send_message(message);
+            if (strcmp(message, "quit") == 0)
+            {
+                send_message(" has left the chat.");
+                close_connection();
+            } else {
+                send_message(message);
+            }
         }
     }
-
     close_connection();
     return 0;
 }
