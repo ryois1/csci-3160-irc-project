@@ -13,13 +13,14 @@ typedef struct {
 // Function to initialize the CLIServer
 static void initializeCLIServer(void) {
     // Initialization logic specific to CLIServer
-    printf("Initializing CLI Server...\n");
+    printf("\x1B[32m   Initializing CLI Server... \n\033[0m");
+
 }
 
 // Function to bind the CLIServer to a specific address and port
 static int bindCLIServer(const char* address, int port) {
     // Binding logic specific to CLIServer
-    printf("Binding CLI Server to %s:%d...\n", address, port);
+    printf("\x1B[32m   Binding CLI Server to %s:%d... \n\033[0m", address, port);
     // Implement actual binding logic here
     return 0; // Return 0 for success, -1 for failure
 }
@@ -43,8 +44,13 @@ static int acceptConnectionCLIServer(void) {
 // Function to clean up resources associated with the CLIServer
 static void cleanupCLIServer(void) {
     // Cleanup logic specific to CLIServer
-    printf("Cleaning up CLI Server...\n");
+    printf("\x1B[31m   Cleaning up CLI Server...   \n\033[0m");
     // Implement actual cleanup logic here
+}
+
+static void onRecieve(void){
+    printf("\x1B[36m CLI Recieved Message  \n\033[0m");
+    printf("Looping through sockets, sending to every other socket.\n");
 }
 
 // Create an instance of CLIServer and set function pointers
@@ -54,6 +60,7 @@ CLIServer cliServerInstance = {
         .bind = bindCLIServer,
         .listen = listenCLIServer,
         .acceptConnection = acceptConnectionCLIServer,
-        .cleanup = cleanupCLIServer
+        .cleanup = cleanupCLIServer,
+        .onRecieve = onRecieve
     }
 };
