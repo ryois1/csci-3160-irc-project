@@ -49,6 +49,7 @@ static void cleanupWebServer(void) {
 
 static void onRecieve(void){
     printf("Web Recieved Message\n");
+    printf("Looping through sockets, sending to every other socket.\n");
 }
 
 // Create an instance of WebServer and set function pointers

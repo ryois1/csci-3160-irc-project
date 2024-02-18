@@ -4,9 +4,9 @@
 #include "common.h"
 
 
-#include "IServerSocket.h"
-#include "WebServer.c"
-#include "CLIServer.c"
+#include "servers/IServerSocket.h"
+#include "servers/WebServer.c"
+#include "servers/CLIServer.c"
 
 
 
