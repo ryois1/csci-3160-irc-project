@@ -29,18 +29,21 @@ int main() {
     webserver.initialize();
     webserver.bind("localhost",80);
 
-    // Create a string
+    // Create a string to store server user input
     char command[32];
 
     //While the user input is not "exit", continue asking for input.
     while(strcmp(command,"exit")!=0){
         printf("\x1B[34m   CLI: \033[0m");
         scanf("%s", command);
+        //TODO add other commands by using strcmp,
+        //or by creating another file with a method called processCommand();
     }
 
 
 
-
+    //Close all ports and do any needed freeing of memory here.
+    //Closing ports ensures the program can be run shortly after.
     cliserver.cleanup();
     webserver.cleanup();
 

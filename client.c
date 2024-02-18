@@ -119,44 +119,15 @@ void close_connection()
     exit(EXIT_SUCCESS);
 }
 
-int main(int argc, char *argv[])
+
+
+int main(int argumentCount, char *arguments[])
 {
-    if (argc != 4)
+    if (argumentCount != 4)
     {
-        fprintf(stderr, "Usage: %s <server_address> <server_port> <client_username>\n", argv[0]);
+        //Prints as a red error string.
+        fprintf(stderr, "\x1B[31mUsage: %s <server_address> <server_port> <client_username>\n\033[0m", arguments[0]);
         exit(EXIT_FAILURE);
     }
-
-    strncpy(username, argv[3], USERNAME_LEN);
-    username[USERNAME_LEN - 1] = '\0'; // Ensure null termination
-
-    connect_to_server(argv[1], argv[2]);
-
-    pthread_t recv_thread;
-    if (pthread_create(&recv_thread, NULL, receive_message, (void *)&sock) != 0)
-    {
-        perror("pthread_create failed");
-        return EXIT_FAILURE;
-    }
-
-    char message[BUFFER_SIZE];
-    while (1)
-    {
-        printf("%s> ", username);
-        fflush(stdout);
-        if (fgets(message, BUFFER_SIZE, stdin) != NULL)
-        {
-            // Remove newline at the end of input
-            message[strcspn(message, "\n")] = 0;
-            if (strcmp(message, "quit") == 0)
-            {
-                send_message(" has left the chat.");
-                close_connection();
-            } else {
-                send_message(message);
-            }
-        }
-    }
-    close_connection();
     return 0;
 }
