@@ -31,10 +31,10 @@ int main() {
 
     // Create a string
     char command[32];
-    
+
     //While the user input is not "exit", continue asking for input.
     while(strcmp(command,"exit")!=0){
-        printf("CLI:");
+        printf("\x1B[34m   CLI: \033[0m");
         scanf("%s", command);
     }
 
