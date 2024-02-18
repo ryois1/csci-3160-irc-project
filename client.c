@@ -6,8 +6,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <pthread.h>
-#include "common.h"
-#include "message.h"
+#include "Common.h"
+#include "messages/Message.h"
 
 char username[USERNAME_LEN];
 int sock; // Socket descriptor

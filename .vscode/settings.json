@@ -61,7 +61,8 @@
     "select.h": "c",
     "unistd.h": "c",
     "in.h": "c",
-    "iserversocket.h": "c"
+    "iserversocket.h": "c",
+    "message.h": "c"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }
