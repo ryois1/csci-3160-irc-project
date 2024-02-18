@@ -48,7 +48,7 @@ static void cleanupCLIServer(void) {
     // Implement actual cleanup logic here
 }
 
-static void recieve(void){
+void recieve(void){
     printf("\x1B[36m CLI Recieved Message  \n\033[0m");
     printf("Looping through sockets, sending to every other socket.\n");
 }
