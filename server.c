@@ -11,8 +11,8 @@
 
 
 int main() {
-    IServerSocket webserver = WebServer();
-    IServerSocket cliserver = CLIServer();
+    IServerSocket webserver = WebServerInstance.base;
+    IServerSocket cliserver = CLIServerInstance.base;
 
     //TODO
     //Add variable called messages that both servers have access too, it should be atomic (think our most recent lab)
