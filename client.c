@@ -7,7 +7,7 @@
 #include <netinet/in.h>
 #include <pthread.h>
 
-#include "Common.h"
+#include "common.h"
 #include "messages/Message.h"
 
 char username[USERNAME_LEN];
