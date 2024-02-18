@@ -11,7 +11,8 @@
 
 
 int main() {
-    system("cls");
+    //Clears the screen because fuck making a standardized clear screen method cross platform :)
+    printf("\e[1;1H\e[2J");
 
     IServerSocket webserver = WebServerInstance.base;
     IServerSocket cliserver = cliServerInstance.base;
