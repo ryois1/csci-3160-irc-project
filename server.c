@@ -23,11 +23,25 @@ int main() {
 
     cliserver.initialize();
     cliserver.bind("localhost",8888);
-    cliserver.cleanup();
+
 
 
     webserver.initialize();
     webserver.bind("localhost",80);
+
+    // Create a string
+    char command[32];
+    
+    //While the user input is not "exit", continue asking for input.
+    while(strcmp(command,"exit")!=0){
+        printf("CLI:");
+        scanf("%s", command);
+    }
+
+
+
+
+    cliserver.cleanup();
     webserver.cleanup();
 
     return 0;
