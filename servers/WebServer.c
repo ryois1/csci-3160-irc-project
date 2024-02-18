@@ -14,14 +14,14 @@ typedef struct {
 static void initializeWebServer(void) {
     // Initialization logic specific to WebServer
     //Green
-    printf("\x1B[32m   Initializing Web Server...\n  \033");
+    printf("\x1B[32m   Initializing Web Server...\n  \033[0m");
 }
 
 // Function to bind the WebServer to a specific address and port
 static int bindWebServer(const char* address, int port) {
     // Binding logic specific to WebServer
     //Green
-    printf("\x1B[32m   Binding Web Server to %s:%d...\n  \033", address, port);
+    printf("\x1B[32m   Binding Web Server to %s:%d...\n  \033[0m", address, port);
     // Implement actual binding logic here
     return 0; // Return 0 for success, -1 for failure
 }
@@ -45,12 +45,12 @@ static int acceptConnectionWebServer(void) {
 // Function to clean up resources associated with the WebServer
 static void cleanupWebServer(void) {
     // Cleanup logic specific to WebServer
-    printf("\x1B[31m   Cleaning up Web Server...\n \033");
+    printf("\x1B[31m   Cleaning up Web Server...\n   \033[0m");
     // Implement actual cleanup logic here
 }
 
 static void onRecieve(void){
-    printf("\x1B[36m Web Recieved Message\n   \033");
+    printf("\x1B[36m Web Recieved Message\n   \033[0m");
     printf("Looping through sockets, sending to every other socket.\n");
 }
 
