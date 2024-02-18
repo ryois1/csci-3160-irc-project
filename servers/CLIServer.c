@@ -48,7 +48,7 @@ static void cleanupCLIServer(void) {
     // Implement actual cleanup logic here
 }
 
-void recieve(void){
+static void cliRecieve(void){
     printf("\x1B[36m CLI Recieved Message  \n\033[0m");
     printf("Looping through sockets, sending to every other socket.\n");
 }
@@ -61,6 +61,6 @@ CLIServer cliServerInstance = {
         .listen = listenCLIServer,
         .acceptConnection = acceptConnectionCLIServer,
         .cleanup = cleanupCLIServer,
-        .onRecieve = recieve
+        .onRecieve = cliRecieve
     }
 };

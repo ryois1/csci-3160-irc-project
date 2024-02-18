@@ -49,7 +49,7 @@ static void cleanupWebServer(void) {
     // Implement actual cleanup logic here
 }
 
-void recieve(void){
+static void webRecieve(void){
     printf("\x1B[36m Web Recieved Message  \n\033[0m");
     printf("Looping through sockets, sending to every other socket.\n");
 }
@@ -62,6 +62,6 @@ WebServer WebServerInstance = {
         .listen = listenWebServer,
         .acceptConnection = acceptConnectionWebServer,
         .cleanup = cleanupWebServer,
-        .onRecieve = recieve
+        .onRecieve = webRecieve
     }
 };
