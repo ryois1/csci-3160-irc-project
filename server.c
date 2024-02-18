@@ -11,6 +11,8 @@
 
 
 int main() {
+    system.cls()
+
     IServerSocket webserver = WebServerInstance.base;
     IServerSocket cliserver = cliServerInstance.base;
 
