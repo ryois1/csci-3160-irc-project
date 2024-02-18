@@ -15,7 +15,7 @@ typedef struct {
     int (*listen)(int backlog);
 
     // Method to listen for incoming messages
-    int (*onRecieve)();
+    int (*onRecieve)(void);
 
     // Method to accept a new incoming connection and return the client socket
     int (*acceptConnection)(void);
