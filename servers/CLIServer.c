@@ -25,7 +25,7 @@ static void initializeCLIServer(void) {
 	int						 connection;
 	int                      sfd, s;
 	char                     buf[32];
-	char					 portnum = "8888";
+	char					 portnum[4] = "8888";
 	ssize_t                  nread;
 	socklen_t                peer_addrlen;
 	struct addrinfo          hints;
@@ -70,7 +70,7 @@ static void initializeCLIServer(void) {
         exit(EXIT_FAILURE);
     }
 
-    
+
 
 
     freeaddrinfo(result);           /* No longer needed */
