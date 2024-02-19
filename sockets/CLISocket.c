@@ -1,6 +1,6 @@
 // Socket.c
 
-#include "ISocket.h"
+#include "ISocket.c"
 
 // Define the Socket structure that implements ISocket
 typedef struct {
