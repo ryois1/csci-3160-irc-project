@@ -23,7 +23,7 @@ int Socket_open(void) {
     printf("Opening client socket cli.\n");
     // Variables
     int              bytes;
-    char             buf[BUF_SIZE];
+    char             buf[32];
     ssize_t          nread;
     struct addrinfo  hints;
     struct addrinfo  *result;
@@ -44,8 +44,8 @@ int Socket_open(void) {
     }
 
     // Create a socket
-    this.sfd = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
-    if (this.sfd == -1) {
+    .sfd = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
+    if (.sfd == -1) {
         fprintf(stderr, "socket: %s\n", strerror(errno));
         exit(EXIT_FAILURE);
     }
@@ -55,8 +55,8 @@ int Socket_open(void) {
 
     // Successfully connected to the server
     printf("Client writing ping\n");
-    bytes = write(this.sfd, "ping", 5); // Send "ping" to the server
-    bytes = read(this.sfd, buf, 5);       // Read the response from the server
+    bytes = write(.sfd, "ping", 5); // Send "ping" to the server
+    bytes = read(.sfd, buf, 5);       // Read the response from the server
     printf("PID: %d; client received %s\n", getpid(), buf);
 
 
@@ -86,4 +86,5 @@ CLISocket cliSocketInstance = {
         .send = Socket_send,
         .receive = Socket_receive,
     }
+    .sfd = -1;
 };
