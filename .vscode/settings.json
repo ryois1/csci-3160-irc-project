@@ -63,7 +63,8 @@
     "in.h": "c",
     "iserversocket.h": "c",
     "message.h": "c",
-    "common.h": "c"
+    "common.h": "c",
+    "types.h": "c"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }
