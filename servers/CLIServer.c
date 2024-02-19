@@ -103,9 +103,6 @@ static void initializeCLIServer(void) {
 	write(connection, buf, 5);
 
 	close(connection);			/* Tear down the session with client */
-
-	return 0;
-
 }
 
 // Function to bind the CLIServer to a specific address and port
