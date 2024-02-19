@@ -23,7 +23,7 @@ static void initializeCLIServer(void) {
     //Declare variables
     int						 reuse_port = 1;
 	int						 connection;
-	int                      sfd, s;
+	int                      sfd;
 	char                     buf[32];
 	char					 portnum[4] = "8888";
 	ssize_t                  nread;
