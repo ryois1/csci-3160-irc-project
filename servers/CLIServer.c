@@ -21,32 +21,20 @@ static void initializeCLIServer(void) {
     printf("\x1B[32m   Initializing CLI Server... \n\033[0m");
 
     //Declare variables
-    int						 reuse_port = 1;
-	int						 connection;
-	int                      sfd;
-	char                     buf[32];
-	char					 portnum[4] = "8888";
-	ssize_t                  nread;
-	socklen_t                peer_addrlen;
-	struct addrinfo          hints;
-	struct addrinfo          *result, *rp;
-	struct sockaddr_storage  peer_addr;
+    int sfd, connection;
+    char buf[32];
+    struct addrinfo hints, *result, *rp;
+    const char *portnum = "8888";
+    int reuse_port = 1;
+
+    //Declare more variables
+    memset(&hints, 0, sizeof(struct addrinfo));
+    hints.ai_family = AF_UNSPEC;    /* Allow IPv4 or IPv6 */
+    hints.ai_socktype = SOCK_STREAM; /* TCP socket */
+    hints.ai_flags = AI_PASSIVE;     /* For wildcard IP address */
 
 
-
-    //Declare even more variables
-	memset(&hints, 0, sizeof(hints));
-	hints.ai_family = AF_UNSPEC;    /* Allow IPv4 or IPv6 */
-	hints.ai_socktype = SOCK_STREAM;/* TCP protocol socket */
-	hints.ai_flags = AI_PASSIVE;    /* For wildcard IP address */
-	hints.ai_protocol = IPPROTO_TCP;/* TCP */
-	hints.ai_canonname = NULL;
-	hints.ai_addr = NULL;
-	hints.ai_next = NULL;
-
-
-
-    //Get ADDR and whatnot
+    //Get the address
     int s = getaddrinfo(NULL, portnum, &hints, &result);
     if (s != 0) {
         fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
@@ -70,10 +58,8 @@ static void initializeCLIServer(void) {
         exit(EXIT_FAILURE);
     }
 
-
-
-
-    freeaddrinfo(result);           /* No longer needed */
+    /* No longer needed */
+    freeaddrinfo(result);           
 
 
 
