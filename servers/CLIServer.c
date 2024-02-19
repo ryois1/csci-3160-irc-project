@@ -24,7 +24,7 @@ static void initializeCLIServer(void) {
     int sfd, connection;
     char buf[32];
     struct addrinfo hints, *result, *rp;
-    const char *portnum = "8888";
+    const char *portnum = "9000";
     int reuse_port = 1;
 
     //Declare more variables
