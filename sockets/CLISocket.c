@@ -12,7 +12,7 @@ typedef struct {
 // Implementation of ISocket methods for Socket
 static int Socket_open(void) {
     // Implementation for opening a socket
-    printf("Opening client socket cli.");
+    printf("Opening client socket cli.\n");
     return 0;
 }
 
