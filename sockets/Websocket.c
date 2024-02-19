@@ -11,6 +11,7 @@ typedef struct {
 
 // Implementation of ISocket methods for Socket
 static int Socket_open(void *self) {
+    printf("Opening client socket");
     // Implementation for opening a socket
     return 0;
 }

@@ -7,6 +7,8 @@
 #include <netinet/in.h>
 #include <pthread.h>
 
+#include "sockets/CLIsocket.c"
+
 
 int main(int argumentCount, char *arguments[])
 {
@@ -20,7 +22,7 @@ int main(int argumentCount, char *arguments[])
     }
 
     //Have backup default arguments that can be used during the showcase of the program.
-    if(argumentCount>1&&argumentCount<5){
+    if(argumentCount<5){
         fprintf(stderr, "\x1B[31mNot Enough arguments, using default connection.\n\033[0m");
         //Change the argument count and assign it to a new array;
         argumentCount = 5;
@@ -37,6 +39,9 @@ int main(int argumentCount, char *arguments[])
     for (int i = 0; i < argumentCount; i++) {
         printf("Arg %s %d \n",arguments[i],i);
     }
+
+    CLISocket socket = Socket_create();
+    socket.open();
 
     return 0;
 }
