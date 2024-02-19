@@ -8,6 +8,7 @@
 #include <pthread.h>
 
 #include "sockets/CLISocket.c"
+#include "sockets/ISocket.c"
 
 
 int main(int argumentCount, char *arguments[])
@@ -40,7 +41,7 @@ int main(int argumentCount, char *arguments[])
         printf("Arg %s %d \n",arguments[i],i);
     }
 
-    CLISocket socket = Socket_create();
+    ISocket webserver = CLISocket.Socket_create();
     socket.open();
 
     return 0;
