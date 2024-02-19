@@ -38,5 +38,5 @@ WebSocket webSocketInstance = {
         .close = Socket_close,
         .send = Socket_send,
         .receive = Socket_receive,
-    };
-}
+    }
+};
