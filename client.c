@@ -13,6 +13,9 @@
 
 int main(int argumentCount, char *arguments[])
 {
+    //Clears the screen because fuck making a standardized clear screen method cross platform :)
+    printf("\e[1;1H\e[2J");
+
     //Show the user proper use.
     if (argumentCount != 5)
     {
@@ -36,13 +39,31 @@ int main(int argumentCount, char *arguments[])
     }
 
 
+    //This is for testing only!
     //For now just print out what arguments the user ended up with.
     for (int i = 0; i < argumentCount; i++) {
         printf("Arg %s %d \n",arguments[i],i);
     }
 
+
+    //Connect socket to server.
     ISocket socket = cliSocketInstance.base;
     socket.open();
+    socket.receive();
+
+
+    //TODO move this inside the send method after we figure out the forking structure.
+    // Create a string to get user message
+    char message[64];
+    //While the user input is not "exit", continue asking for their next message
+    while(strcmp(message,"exit")!=0){
+        //print username then a :
+        printf("\x1B[34m   %s: \033[0m",arguments[3]);
+        scanf("%s", command);
+    }
+
+    //Close the connection and free resources.
+    socket.close();
 
     return 0;
 }
