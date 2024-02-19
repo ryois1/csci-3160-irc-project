@@ -7,7 +7,7 @@
 #include <netinet/in.h>
 #include <pthread.h>
 
-#include "./sockets/CLISocket.c"
+#include "sockets/CLISocket.c"
 
 
 int main(int argumentCount, char *arguments[])
