@@ -19,7 +19,7 @@ typedef struct {
 
 // Implementation of ISocket methods for Socket
 int Socket_open(void *self) {
-    CLISocket *self = (WebSocket *)self;
+    // CLISocket *self = (WebSocket *)self;
     // Implementation for opening a socket
     printf("Opening client socket cli.\n");
     // Variables
