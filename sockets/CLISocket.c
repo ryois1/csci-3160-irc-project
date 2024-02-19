@@ -39,7 +39,7 @@ int Socket_open(void *self) {
     hints.ai_protocol = IPPROTO_TCP; /* TCP */
 
     // Get the address from the variables
-    if (getaddrinfo("localhost",8888, &hints, &result) != 0) {
+    if (getaddrinfo("localhost","8888", &hints, &result) != 0) {
         fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(errno));
         exit(EXIT_FAILURE);
     }
