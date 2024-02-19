@@ -7,7 +7,7 @@ typedef struct {
     ISocket base;
     // Add any specific members for the Socket
     // ...
-} Socket;
+} CLISocket;
 
 // Implementation of ISocket methods for Socket
 static int Socket_open(void *self) {
