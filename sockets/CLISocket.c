@@ -46,6 +46,7 @@ int Socket_open(void *self) {
 
     // Create a socket
     clisocket->sfd = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
+    connect(clisocket->sfd, rp->ai_addr, rp->ai_addrlen);
     if (clisocket->sfd == -1) {
         fprintf(stderr, "socket: %s\n", strerror(errno));
         exit(EXIT_FAILURE);
@@ -55,7 +56,6 @@ int Socket_open(void *self) {
     freeaddrinfo(result);
 
     // Successfully connected to the server
-    printf("Client writing ping %d\n",clisocket->sfd);
     //TODO determine how to fork properly so that the original program can continue or even ask the user for inputs while also allowing the socket to receive messages.
     printf("Client writing ping\n");
     bytes = write(clisocket->sfd, "ping", 5); // Send "ping" to the server
