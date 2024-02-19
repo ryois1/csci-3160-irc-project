@@ -39,6 +39,4 @@ CLISocket cliSocketInstance = {
         .send = Socket_send,
         .receive = Socket_receive,
     };
-
-    return socket;
 }

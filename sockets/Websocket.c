@@ -39,6 +39,4 @@ WebSocket webSocketInstance = {
         .send = Socket_send,
         .receive = Socket_receive,
     };
-
-    return websocket;
 }
