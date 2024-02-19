@@ -46,7 +46,7 @@ int Socket_open(void *self) {
 
     // Create a socket
     clisocket->sfd = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
-    connect(clisocket->sfd, rp->ai_addr, rp->ai_addrlen);
+    connect(clisocket->sfd, result->ai_addr, result->ai_addrlen);
     if (clisocket->sfd == -1) {
         fprintf(stderr, "socket: %s\n", strerror(errno));
         exit(EXIT_FAILURE);
