@@ -6,7 +6,7 @@
 // Define the ISocket interface
 typedef struct {
     // Method to open the socket
-    int (*open)(void);
+    int (*open)(void *self);
 
     // Method to close the socket
     int (*close)(void *self);
