@@ -10,7 +10,7 @@ typedef struct {
 } CLISocket;
 
 // Implementation of ISocket methods for Socket
-static int Socket_open(void *self) {
+static int Socket_open(void) {
     // Implementation for opening a socket
     printf("Opening client socket cli.");
     return 0;

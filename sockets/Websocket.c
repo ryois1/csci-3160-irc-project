@@ -10,7 +10,7 @@ typedef struct {
 } WebSocket;
 
 // Implementation of ISocket methods for Socket
-static int Socket_open(void *self) {
+static int Socket_open(void) {
     printf("Opening client socket");
     // Implementation for opening a socket
     return 0;
