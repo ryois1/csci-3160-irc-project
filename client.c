@@ -49,7 +49,8 @@ int main(int argumentCount, char *arguments[])
     //Connect socket to server.
     ISocket socket = cliSocketInstance.base;
     socket.open();
-    socket.receive();
+    //TODO change params of this method so it will compile lmao.
+    //socket.receive();
 
 
     //TODO move this inside the send method after we figure out the forking structure.
@@ -59,11 +60,12 @@ int main(int argumentCount, char *arguments[])
     while(strcmp(message,"exit")!=0){
         //print username then a :
         printf("\x1B[34m   %s: \033[0m",arguments[3]);
-        scanf("%s", command);
+        scanf("%s", message);
     }
 
     //Close the connection and free resources.
-    socket.close();
+    //TODO change params of this method so it will compile lmao.
+    //socket.close();
 
     return 0;
 }
