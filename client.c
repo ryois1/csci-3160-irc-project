@@ -10,6 +10,16 @@
 
 int main(int argumentCount, char *arguments[])
 {
+    //Show the user proper use.
+    if (argumentCount != 5)
+    {
+        //Prints as a red error string.
+        fprintf(stderr, "\x1B[31mUsage: %s <server_address> <server_port> <client_username> <client_password>\n\033[0m", arguments[0]);
+        //Optional exit the program?
+        // exit(EXIT_FAILURE);
+    }
+
+    //Have backup default arguments that can be used during the showcase of the program.
     if(argumentCount>1&&argumentCount<5){
         fprintf(stderr, "\x1B[31mNot Enough arguments, using default connection.\n\033[0m");
         //Change the argument count and assign it to a new array;
@@ -21,11 +31,10 @@ int main(int argumentCount, char *arguments[])
         arguments[3] = "guest";
         arguments[4] = "password";
     }
-    if (argumentCount != 5)
-    {
-        //Prints as a red error string.
-        fprintf(stderr, "\x1B[31mUsage: %s <server_address> <server_port> <client_username> <client_password>\n\033[0m", arguments[0]);
-        exit(EXIT_FAILURE);
+
+    for (int i = 0; i < argumentCount; i++) {
+        printf("Arg %s %d",arguments[i],i)
     }
+
     return 0;
 }
