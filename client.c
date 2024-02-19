@@ -41,7 +41,7 @@ int main(int argumentCount, char *arguments[])
         printf("Arg %s %d \n",arguments[i],i);
     }
 
-    ISocket webserver = CLISocket.Socket_create();
+    ISocket webserver = Socket_create();
     socket.open();
 
     return 0;
