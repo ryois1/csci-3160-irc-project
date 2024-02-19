@@ -14,12 +14,12 @@ int main(int argumentCount, char *arguments[])
         fprintf(stderr, "\x1B[31mNot Enough arguments, using default connection.\n\033[0m");
         //Change the argument count and assign it to a new array;
         argumentCount = 5;
+        free(arguments);
         arguments = (char **)malloc(sizeof(char *) * 5);
         arguments[1] = "localhost";
         arguments[2] = "8888";
         arguments[3] = "guest";
         arguments[4] = "password";
-
     }
     if (argumentCount != 5)
     {
