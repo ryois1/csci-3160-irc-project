@@ -19,7 +19,7 @@ typedef struct {
 
 // Implementation of ISocket methods for Socket
 int Socket_open(void *self) {
-    // CLISocket *self = (WebSocket *)self;
+    CLISocket *clisocket = (WebSocket *)self;
     // Implementation for opening a socket
     printf("Opening client socket cli.\n");
     // Variables
@@ -45,8 +45,8 @@ int Socket_open(void *self) {
     }
 
     // Create a socket
-    self->sfd = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
-    if (self->sfd == -1) {
+    clisocket->sfd = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
+    if (clisocket->sfd == -1) {
         fprintf(stderr, "socket: %s\n", strerror(errno));
         exit(EXIT_FAILURE);
     }
@@ -56,8 +56,8 @@ int Socket_open(void *self) {
 
     // Successfully connected to the server
     printf("Client writing ping\n");
-    bytes = write(self->sfd, "ping", 5); // Send "ping" to the server
-    bytes = read(self->sfd, buf, 5);       // Read the response from the server
+    bytes = write(clisocket->sfd, "ping", 5); // Send "ping" to the server
+    bytes = read(clisocket->sfd, buf, 5);       // Read the response from the server
     printf("PID: %d; client received %s\n", getpid(), buf);
 
 
