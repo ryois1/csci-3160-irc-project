@@ -32,8 +32,8 @@ static int Socket_receive(void *self, char *buffer, size_t length) {
 }
 
 // Initialize the Socket structure with ISocket methods
-ISocket Socket_create() {
-    ISocket socket = {
+CLISocket cliSocketInstance = {
+    .base = {
         .open = Socket_open,
         .close = Socket_close,
         .send = Socket_send,
