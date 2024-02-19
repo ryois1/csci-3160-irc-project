@@ -62,12 +62,6 @@ static void initializeCLIServer(void) {
     freeaddrinfo(result);           
 
 
-
-	if (rp == NULL) {               /* No address succeeded */
-		fprintf(stderr, "Could not bind\n");
-		exit(EXIT_FAILURE);
-	}
-
 	/* Listen to the gorram socket */
 	if (listen(sfd, 1) < 0) {
 		fprintf(stderr, "Error in listen: %s\n", strerror(errno));
