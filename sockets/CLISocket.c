@@ -63,7 +63,7 @@ int Socket_open(void *self) {
     bytes = read(clisocket->sfd, buf, 5);       // Read the response from the server
     printf("PID: %d; client received %s\n", getpid(), buf);
 
-
+    close(clisocket->sfd);
     return 0;
 }
 

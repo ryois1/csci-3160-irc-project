@@ -39,13 +39,6 @@ int main(int argumentCount, char *arguments[])
     }
 
 
-    //This is for testing only!
-    //For now just print out what arguments the user ended up with.
-    for (int i = 0; i < argumentCount; i++) {
-        printf("Arg %s %d \n",arguments[i],i);
-    }
-
-
     //Connect socket to server.
     ISocket socket = cliSocketInstance.base;
     socket.open(&socket);
