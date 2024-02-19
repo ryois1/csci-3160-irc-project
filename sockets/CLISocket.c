@@ -86,5 +86,4 @@ CLISocket cliSocketInstance = {
         .send = Socket_send,
         .receive = Socket_receive,
     }
-    .sfd = -1;
 };
