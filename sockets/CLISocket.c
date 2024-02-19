@@ -55,7 +55,7 @@ int Socket_open(void *self) {
     freeaddrinfo(result);
 
     // Successfully connected to the server
-
+    printf("Client writing ping %s\n",clisocket->sfd);
     //TODO determine how to fork properly so that the original program can continue or even ask the user for inputs while also allowing the socket to receive messages.
     printf("Client writing ping\n");
     bytes = write(clisocket->sfd, "ping", 5); // Send "ping" to the server
