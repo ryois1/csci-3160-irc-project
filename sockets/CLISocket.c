@@ -57,35 +57,42 @@ int Socket_open(void *self) {
 
     // Successfully connected to the server
     //TODO determine how to fork properly so that the original program can continue or even ask the user for inputs while also allowing the socket to receive messages.
-
-    //TODO FORK call socket_recieve
-    char             buf[32];
-    Socket_receive(clisocket,buf)
     
-    close(clisocket->sfd);
+
     return 0;
 }
 
 static int Socket_close(void *self) {
     // Implementation for closing a socket
-    int              bytes;
-    
+    if (close(((CLISocket *)self)->sfd) == -1) {
+        fprintf(stderr, "close: %s\n", strerror(errno));
+        exit(EXIT_FAILURE);
+    }
 }
 
 static int Socket_send(void *self, const char *data, size_t length) {
     // Implementation for sending data through a socket
-    return 0;
+    int bytes;
+    CLISocket *clisocket = (CLISocket *)self;
+    bytes = write(clisocket->sfd, data, length);
+    
+    return bytes;
+
 }
 
 static int Socket_receive(void *self, char *buffer, size_t length) {
-    // Implementation for receiving data from a socket 
+    //if pid is not parent, fork
+    if(getpid() != 0){
+        pid_t pid = fork();
+        if(pid == 0){
+            //child
+        // Implementation for receiving data from a socket 
     int              bytes;
     ssize_t          nread;
+    char             buf[32];
     CLISocket *clisocket = (CLISocket *)self;
     //TODO pthread lock unlock so its not taking up all the time?
-    while(1){
-        printf("Client writing ping\n");
-        bytes = write(clisocket->sfd, "ping", 5); // Send "ping" to the server
+    while(TRUE){
         //TODO fork into read loop.
         bytes = read(clisocket->sfd, buf, 5);       // Read the response from the server
         printf("PID: %d; client received %s\n", getpid(), buf);
@@ -93,6 +100,12 @@ static int Socket_receive(void *self, char *buffer, size_t length) {
         
         // Sleep for a short duration to avoid busy-waiting
         usleep(1000000);  // milliseconds
+        }
+    }
+    //parent
+    
+    
+   
     }
     return 0;
 }

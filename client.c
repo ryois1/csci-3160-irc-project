@@ -42,6 +42,12 @@ int main(int argumentCount, char *arguments[])
     //Connect socket to server.
     ISocket socket = cliSocketInstance.base;
     socket.open(&socket);
+
+    socket.receive();
+
+    while(TRUE){
+        socket.send("Hello",6);
+    }
     //TODO change params of this method so it will compile lmao.
     //socket.receive();
 
