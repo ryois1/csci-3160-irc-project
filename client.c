@@ -62,7 +62,7 @@ int main(int argumentCount, char *arguments[])
         //print username then a :
         printf("\x1B[34m   %s: \033[0m",arguments[3]);
         fgets(message, sizeof(message), stdin);
-        socket.send(&socket,message, 32);
+        socket.send(socket->sfd,message, 32);
     }
     exit(0);
     //TODO change params of this method so it will compile lmao.
