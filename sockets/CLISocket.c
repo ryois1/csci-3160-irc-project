@@ -81,7 +81,7 @@ static int Socket_send(void *self, const char *data, size_t length) {
 
 }
 
-static int Socket_receive(void *self) {
+static int Socket_receive(void *self,) {
     int              bytes;
     ssize_t          nread;
     char             buf[32];
@@ -89,9 +89,10 @@ static int Socket_receive(void *self) {
     //TODO pthread lock unlock so its not taking up all the time?
     while(true){
         //TODO fork into read loop.
+        //pthread lock then unlock after finishing read
+
         bytes = read(clisocket->sfd, buf, 5);       // Read the response from the server
         printf("PID: %d; client received %s\n", getpid(), buf);
-
         
         // Sleep for a short duration to avoid busy-waiting
         usleep(1000000);  // milliseconds
