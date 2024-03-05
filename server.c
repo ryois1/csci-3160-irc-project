@@ -15,7 +15,7 @@
 
 int client_socket[MAX_CLIENTS];
 pthread_mutex_t client_socket_mutex = PTHREAD_MUTEX_INITIALIZER;
-
+//comment to make this main lmao
 // Function prototypes
 void initialize_server(int *master_socket, struct sockaddr_in *address);
 void accept_new_connection(int master_socket, struct sockaddr_in *address);
