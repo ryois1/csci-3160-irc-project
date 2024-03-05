@@ -83,7 +83,7 @@ static int Socket_send(void *self, const char *data, size_t length) {
     printf("PRE Write : %s\n",data);
 
     bytes = write(clisocket->sfd, data, length);
-    
+    printf("Bytes written %d \n",bytes);
     return bytes;
 
 }
