@@ -7,6 +7,9 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <fcntl.h> 
+#include <sys/select.h> 
+
 
 // Define the CLIServer class
 typedef struct {
