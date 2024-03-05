@@ -8,7 +8,7 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-#include "ISocket.c"
+#include "ISocket.h"
 
 // Define the Socket structure that implements ISocket
 typedef struct {
@@ -81,13 +81,7 @@ static int Socket_send(void *self, const char *data, size_t length) {
 
 }
 
-static int Socket_receive(void *self, char *buffer, size_t length) {
-    //if pid is not parent, fork
-    if(getpid() != 0){
-        pid_t pid = fork();
-        if(pid == 0){
-            //child
-        // Implementation for receiving data from a socket 
+static int Socket_receive(void *self) {
     int              bytes;
     ssize_t          nread;
     char             buf[32];
@@ -102,14 +96,9 @@ static int Socket_receive(void *self, char *buffer, size_t length) {
         // Sleep for a short duration to avoid busy-waiting
         usleep(1000000);  // milliseconds
         }
+        return 0;
     }
-    //parent
-    
-    
-   
-    }
-    return 0;
-}
+
 
 // Initialize the Socket structure with ISocket methods
 CLISocket cliSocketInstance = {

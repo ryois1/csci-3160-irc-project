@@ -44,7 +44,16 @@ int main(int argumentCount, char *arguments[])
     ISocket socket = cliSocketInstance.base;
     socket.open(&socket);
 
-    socket.receive();
+    //Fork here, call recieve
+    //create child, send child through socket.receive
+    pid_t parent_pid = getpid();
+    pid_t child_pid = fork();
+    //if child, send through socket.receive
+    if (child != parent_pid) {
+        socket.receive();
+    }
+    
+
     char *message = malloc(sizeof(char)*129); //128 chars is the limit
     while(true){
         socket.send("Hello", message->length);
