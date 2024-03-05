@@ -9,7 +9,7 @@
 #include <stdbool.h> /* Include boolean true/false */
 
 #include "sockets/CLISocket.c"
-#include "sockets/ISocket.c"
+#include "sockets/ISocket.h"
 
 
 int main(int argumentCount, char *arguments[])
@@ -50,6 +50,7 @@ int main(int argumentCount, char *arguments[])
     pid_t child_pid = fork();
     //if child, send through socket.receive
     if (child != parent_pid) {
+        printf("pid: %s", child_pid);
         socket.receive();
     }
     
