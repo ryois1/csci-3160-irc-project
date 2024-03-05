@@ -57,7 +57,7 @@ int main(int argumentCount, char *arguments[])
 
     char *message = malloc(sizeof(char)*129); //128 chars is the limit
     while(true){
-        socket.send("Hello", message->length);
+        socket.send(&socket,"Hello", 129);
     }
     //TODO change params of this method so it will compile lmao.
     //socket.receive();
