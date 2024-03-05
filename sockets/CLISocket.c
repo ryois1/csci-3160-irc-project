@@ -59,7 +59,9 @@ int Socket_open(void *self) {
     //TODO determine how to fork properly so that the original program can continue or even ask the user for inputs while also allowing the socket to receive messages.
 
     //TODO FORK call socket_recieve
-
+    char             buf[32];
+    Socket_receive(clisocket,buf)
+    
     close(clisocket->sfd);
     return 0;
 }
@@ -77,11 +79,10 @@ static int Socket_send(void *self, const char *data, size_t length) {
 static int Socket_receive(void *self, char *buffer, size_t length) {
     // Implementation for receiving data from a socket 
     int              bytes;
-    char             buf[32];
     ssize_t          nread;
     CLISocket *clisocket = (CLISocket *)self;
     //TODO pthread lock unlock so its not taking up all the time?
-    while(true){
+    while(1){
         printf("Client writing ping\n");
         bytes = write(clisocket->sfd, "ping", 5); // Send "ping" to the server
         //TODO fork into read loop.
