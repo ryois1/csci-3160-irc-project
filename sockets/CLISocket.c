@@ -75,6 +75,10 @@ static int Socket_send(void *self, const char *data, size_t length) {
     // Implementation for sending data through a socket
     int bytes;
     CLISocket *clisocket = (CLISocket *)self;
+    //if send is empty, return 0
+    if (length == 0) {
+        return 0;
+    }
     bytes = write(clisocket->sfd, data, length);
     
     return bytes;
