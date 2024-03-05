@@ -62,8 +62,6 @@ int main(int argumentCount, char *arguments[])
         //print username then a :
         printf("\x1B[34m   %s: \033[0m",arguments[3]);
         scanf("%s", message);
-        //remove null terminaor
-        
         socket.send(&socket,message, 129);
     
     }

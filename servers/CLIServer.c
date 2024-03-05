@@ -26,6 +26,7 @@ static void initializeCLIServer(void) {
     //Declare variables
     int sfd, connection;
     char buf[32];
+    char bufRec[32];
     struct addrinfo hints, *result, *rp;
     const char *portnum = "9000";
     int reuse_port = 1;
@@ -82,7 +83,7 @@ static void initializeCLIServer(void) {
         /* Do the ping-pong thing */
 
         fcntl(connection, F_SETFL, SOCK_NONBLOCK); //non blocking read
-        read(connection, buf, 5);
+        read(connection, bufRec, 32);
         printf("PID: %d; server received %s\n", getpid(), buf);
         // read(connection, buf, 5);
         // printf("PID: %d; server received %s\n", getpid(), buf);
