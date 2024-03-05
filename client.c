@@ -51,7 +51,7 @@ int main(int argumentCount, char *arguments[])
     //if child, send through socket.receive
     if (child_pid == 0) {
         printf("pid: %d", child_pid);
-        socket.receive(&socket);
+        // socket.receive(&socket);
         exit(0);
     }
     
