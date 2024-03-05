@@ -78,7 +78,7 @@ static void initializeCLIServer(void) {
     while(1){
         /* Do the ping-pong thing */
 
-        fcntl(connection, F_SETFL, O_NONBLOCK); //non blocking read
+        fcntl(connection, F_SETFL, SOCK_NONBLOCK); //non blocking read
         read(connection, buf, 5);
         printf("PID: %d; server received %s\n", getpid(), buf);
         // read(connection, buf, 5);
