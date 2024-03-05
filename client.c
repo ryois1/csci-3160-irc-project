@@ -61,7 +61,7 @@ int main(int argumentCount, char *arguments[])
     while(strcmp(message,"exit")!=0){
         //print username then a :
         printf("\x1B[34m   %s: \033[0m",arguments[3]);
-        getline(&message,32,stdin);
+        fgets(message, sizeof(message), stdin);
         socket.send(&socket,message, 32);
     }
     exit(0);
