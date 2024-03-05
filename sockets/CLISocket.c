@@ -57,12 +57,13 @@ int Socket_open(void *self) {
 
     // Successfully connected to the server
     //TODO determine how to fork properly so that the original program can continue or even ask the user for inputs while also allowing the socket to receive messages.
-    printf("Client writing ping\n");
-    bytes = write(clisocket->sfd, "ping", 5); // Send "ping" to the server
-    //TODO fork into read loop.
-    bytes = read(clisocket->sfd, buf, 5);       // Read the response from the server
-    printf("PID: %d; client received %s\n", getpid(), buf);
-
+    while(true){
+        printf("Client writing ping\n");
+        bytes = write(clisocket->sfd, "ping", 5); // Send "ping" to the server
+        //TODO fork into read loop.
+        bytes = read(clisocket->sfd, buf, 5);       // Read the response from the server
+        printf("PID: %d; client received %s\n", getpid(), buf);
+    }
     close(clisocket->sfd);
     return 0;
 }
