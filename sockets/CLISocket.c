@@ -81,7 +81,7 @@ static int Socket_send(void *self, const char *data, size_t length) {
 
 }
 
-static int Socket_receive(void *self,) {
+static int Socket_receive(void *self) {
     int              bytes;
     ssize_t          nread;
     char             buf[32];
