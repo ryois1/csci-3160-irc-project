@@ -77,8 +77,8 @@ static void initializeCLIServer(void) {
 
     while(1){
         /* Do the ping-pong thing */
-        read(connection, buf, 5);
-        printf("PID: %d; server received %s\n", getpid(), buf);
+        // read(connection, buf, 5);
+        // printf("PID: %d; server received %s\n", getpid(), buf);
         strcpy(buf, "pong");
         printf("Server writes %s\n", buf);
         write(connection, buf, 5);
