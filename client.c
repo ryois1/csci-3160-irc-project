@@ -57,7 +57,7 @@ int main(int argumentCount, char *arguments[])
 
     char *message = malloc(sizeof(char)*129); //128 chars is the limit
     while(true){
-        printf("Sending hello?");
+        printf("Sending hello?\n");
         socket.send(&socket,"Hello", 129);
 
         usleep(1000000);
