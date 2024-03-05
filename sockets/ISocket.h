@@ -1,6 +1,5 @@
 // ISocket.h
 
-
 #ifndef ISOCKET_H
 #define ISOCKET_H
 
