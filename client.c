@@ -6,7 +6,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <pthread.h>
-#include <stdbool.h>
+#include <stdbool.h> /* Include boolean true/false */
 
 #include "sockets/CLISocket.c"
 #include "sockets/ISocket.c"
@@ -54,14 +54,14 @@ int main(int argumentCount, char *arguments[])
 
 
     //TODO move this inside the send method after we figure out the forking structure.
-    // Create a string to get user message
-    char message[64];
-    //While the user input is not "exit", continue asking for their next message
-    while(strcmp(message,"exit")!=0){
-        //print username then a :
-        printf("\x1B[34m   %s: \033[0m",arguments[3]);
-        scanf("%s", message);
-    }
+    // // Create a string to get user message
+    // char message[64];
+    // //While the user input is not "exit", continue asking for their next message
+    // while(strcmp(message,"exit")!=0){
+    //     //print username then a :
+    //     printf("\x1B[34m   %s: \033[0m",arguments[3]);
+    //     scanf("%s", message);
+    // }
 
     //Close the connection and free resources.
     //TODO change params of this method so it will compile lmao.
