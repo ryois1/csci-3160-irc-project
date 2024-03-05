@@ -58,6 +58,7 @@ int Socket_open(void *self) {
 
     // Successfully connected to the server
     //TODO determine how to fork properly so that the original program can continue or even ask the user for inputs while also allowing the socket to receive messages.
+    printf("Successfully connected!!\n");
     
 
     return 0;
