@@ -26,7 +26,7 @@ static int Socket_send(void *self, const char *data, size_t length) {
     return 0;
 }
 
-static int Socket_receive(void *self, char *buffer, size_t length) {
+static int Socket_receive(void *self) {
     // Implementation for receiving data from a socket
     return 0;
 }

@@ -15,7 +15,7 @@ typedef struct {
     int (*send)(void *self, const char *data, size_t length);
 
     // Method to receive data from the socket
-    int (*receive)(void *self, char *buffer, size_t length);
+    int (*receive)(void *self);
 } ISocket;
 
 #endif /* ISOCKET_H */

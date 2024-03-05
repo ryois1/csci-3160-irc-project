@@ -50,8 +50,8 @@ int main(int argumentCount, char *arguments[])
     pid_t child_pid = fork();
     //if child, send through socket.receive
     if (child_pid != parent_pid) {
-        printf("pid: %s", child_pid);
-        socket.receive();
+        printf("pid: %d", child_pid);
+        socket.receive(&socket);
     }
     
 
