@@ -84,7 +84,7 @@ static void initializeCLIServer(void) {
 
         fcntl(connection, F_SETFL, SOCK_NONBLOCK); //non blocking read
         read(connection, bufRec, 32);
-        printf("PID: %d; server received %s\n", getpid(), buf);
+        printf("PID: %d; server received %s\n", getpid(), bufRec);
         // read(connection, buf, 5);
         // printf("PID: %d; server received %s\n", getpid(), buf);
         strcpy(buf, "pong");
