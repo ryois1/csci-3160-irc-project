@@ -89,6 +89,7 @@ static void initializeCLIServer(void) {
         strcpy(buf, "pong");
         printf("Server writes %s\n", buf);
         write(connection, buf, 5);
+        usleep(1000000);  // milliseconds
     }
 
 	close(connection);			/* Tear down the session with client */

@@ -55,13 +55,17 @@ int main(int argumentCount, char *arguments[])
         exit(0);
     }
     
-
-    char *message = malloc(sizeof(char)*129); //128 chars is the limit
-    while(true){
-        printf("Sending hello?\n");
-        socket.send(&socket,"Hello", 129);
-
-        usleep(1000000);
+        
+    char message[64];
+    // //While the user input is not "exit", continue asking for their next message
+    while(strcmp(message,"exit")!=0){
+        //print username then a :
+        printf("\x1B[34m   %s: \033[0m",arguments[3]);
+        scanf("%s", message);
+        //remove null terminaor
+        
+        socket.send(&socket,message, 129);
+    
     }
     //TODO change params of this method so it will compile lmao.
     //socket.receive();
@@ -69,13 +73,7 @@ int main(int argumentCount, char *arguments[])
 
     //TODO move this inside the send method after we figure out the forking structure.
     // // Create a string to get user message
-    // char message[64];
-    // //While the user input is not "exit", continue asking for their next message
-    // while(strcmp(message,"exit")!=0){
-    //     //print username then a :
-    //     printf("\x1B[34m   %s: \033[0m",arguments[3]);
-    //     scanf("%s", message);
-    // }
+
 
     //Close the connection and free resources.
     //TODO change params of this method so it will compile lmao.
