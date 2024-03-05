@@ -5,6 +5,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <stdbool.h>
 #include <unistd.h>
 
 #include "ISocket.c"
@@ -92,7 +93,7 @@ static int Socket_receive(void *self, char *buffer, size_t length) {
     char             buf[32];
     CLISocket *clisocket = (CLISocket *)self;
     //TODO pthread lock unlock so its not taking up all the time?
-    while(TRUE){
+    while(true){
         //TODO fork into read loop.
         bytes = read(clisocket->sfd, buf, 5);       // Read the response from the server
         printf("PID: %d; client received %s\n", getpid(), buf);
