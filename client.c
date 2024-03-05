@@ -56,15 +56,15 @@ int main(int argumentCount, char *arguments[])
     }
     
         
-    char message[64];
+    char message[32];
     // //While the user input is not "exit", continue asking for their next message
     while(strcmp(message,"exit")!=0){
         //print username then a :
         printf("\x1B[34m   %s: \033[0m",arguments[3]);
         scanf("%s", message);
-        socket.send(&socket,message, 129);
-    
+        socket.send(&socket,message, 32);
     }
+    exit(0);
     //TODO change params of this method so it will compile lmao.
     //socket.receive();
 
