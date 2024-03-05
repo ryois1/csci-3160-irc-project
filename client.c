@@ -6,6 +6,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <pthread.h>
+#include <stdbool.h>
 
 #include "sockets/CLISocket.c"
 #include "sockets/ISocket.c"
@@ -44,9 +45,9 @@ int main(int argumentCount, char *arguments[])
     socket.open(&socket);
 
     socket.receive();
-
-    while(TRUE){
-        socket.send("Hello",6);
+    char *message = malloc(sizeof(char)*129); //128 chars is the limit
+    while(true){
+        socket.send("Hello", message->length);
     }
     //TODO change params of this method so it will compile lmao.
     //socket.receive();
