@@ -51,7 +51,7 @@ int main(int argumentCount, char *arguments[])
     //if child, send through socket.receive
     if (child_pid == 0) {
         printf("pid: %d", child_pid);
-        // socket.receive(&socket);
+        socket.receive(&socket);
         exit(0);
     }
     
@@ -62,7 +62,7 @@ int main(int argumentCount, char *arguments[])
         //print username then a :
         printf("\x1B[34m   %s: \033[0m",arguments[3]);
         fgets(message, sizeof(message), stdin);
-        printf("Msg %s",message);
+        printf("Msg %s\n",message);
         socket.send(&socket,message, 32);
     }
     exit(0);
