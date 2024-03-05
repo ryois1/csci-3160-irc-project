@@ -1,6 +1,5 @@
 // ISocket.h
 
-#include <pthread.h>
 
 #ifndef ISOCKET_H
 #define ISOCKET_H
@@ -17,7 +16,7 @@ typedef struct {
     int (*send)(void *self, const char *data, size_t length);
 
     // Method to receive data from the socket
-    int (*receive)(void *self,);
+    int (*receive)(void *self);
 } ISocket;
 
 #endif /* ISOCKET_H */
