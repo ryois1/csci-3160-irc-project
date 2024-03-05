@@ -68,7 +68,8 @@ int Socket_open(void *self) {
 
 static int Socket_close(void *self) {
     // Implementation for closing a socket
-    return 0;
+    int              bytes;
+    
 }
 
 static int Socket_send(void *self, const char *data, size_t length) {
@@ -91,7 +92,7 @@ static int Socket_receive(void *self, char *buffer, size_t length) {
 
         
         // Sleep for a short duration to avoid busy-waiting
-        usleep(1000000);  // 500 milliseconds
+        usleep(1000000);  // milliseconds
     }
     return 0;
 }

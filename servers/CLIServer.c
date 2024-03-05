@@ -75,7 +75,7 @@ static void initializeCLIServer(void) {
 		exit(EXIT_FAILURE);
 	}
 
-    while(true){
+    while(1){
         /* Do the ping-pong thing */
         read(connection, buf, 5);
         printf("PID: %d; server received %s\n", getpid(), buf);
