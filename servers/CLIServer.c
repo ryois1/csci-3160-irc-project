@@ -10,7 +10,7 @@
 #include <fcntl.h> 
 #include <sys/select.h> 
 #include <stdatomic.h>
-
+#include <sys/mman.h>
 int connections[32];
 
 // Define the CLIServer class
@@ -32,7 +32,7 @@ static void initializeCLIServer() {
 
     // Initialize the shared variable
     *connection_count = 0;
-    
+
     // Initialization logic specific to CLIServer
     printf("\x1B[32m   Initializing CLI Server... \n\033[0m");
 
