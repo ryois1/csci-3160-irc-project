@@ -11,7 +11,6 @@
 #include <sys/select.h> 
 #include <stdatomic.h>
 #include <sys/mman.h>
-int connections[32];
 
 // Define the CLIServer class
 typedef struct {
@@ -25,7 +24,13 @@ static void initializeCLIServer() {
 
         // Create a shared memory region
     int *connection_count = mmap(NULL, sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+    int *connections = mmap(NULL, 32 * sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+    
     if (connection_count == MAP_FAILED) {
+        perror("mmap");
+        exit(EXIT_FAILURE);
+    }
+        if (connections == MAP_FAILED) {
         perror("mmap");
         exit(EXIT_FAILURE);
     }
@@ -33,13 +38,16 @@ static void initializeCLIServer() {
     // Initialize the shared variable
     *connection_count = 0;
 
+    // Initialize the shared array
+    for (int i = 0; i < MAX_CONNECTIONS; ++i) {
+        connections[i] = 0;
+    }
     // Initialization logic specific to CLIServer
     printf("\x1B[32m   Initializing CLI Server... \n\033[0m");
 
     //Declare variables
     int sfd;
     char buf[32];
-    char bufRec[32];
     struct addrinfo hints, *result, *rp;
     const char *portnum = "9000";
     int reuse_port = 1;
@@ -101,7 +109,7 @@ static void initializeCLIServer() {
             }
 
             printf("Accepted %d\n ",connection);
-            //connections[connection_count] = connection;
+            connections[connection_count] = connection;
             *connection_count = *connection_count  + 1;
             
             printf("Connected count amount: %d \n",*connection_count);
@@ -112,25 +120,33 @@ static void initializeCLIServer() {
     while(1){
        //* Do the ping-pong thing */
        //for each connection do this:
-       printf("Connected: %d \n",*connection_count);
+       printf("Connected to clients: %d \n",*connection_count);
        usleep(1000000);  // milliseconds
+        int i = 0;
+         for(; i < *connection_count; i++){
+                printf("Reading from %d",i);
+            char bufRec[32];
+            fcntl(connections[i], F_SETFL, SOCK_NONBLOCK); //non blocking read
+            read(connections[i], bufRec, 32);
 
-         for(int i = 0; i < *connection_count; i++){
-            //  fcntl(connections[i], F_SETFL, SOCK_NONBLOCK); //non blocking read
-            //  read(connections[i], bufRec, 32);
             //  printf("PID: %d; server received %s\n", getpid(), bufRec);
             //  read(connection, buf, 5);
             //  printf("PID: %d; server received %s\n", getpid(), buf);
             // strcpy(buf, "pong");
             // printf("Server writes %s\n", buf);
-            // write(connections[i], buf, 5);
+  
 
             // Add If statement here, if the message is new.
-            for(int j = 0; j < *connection_count; j++){
-                if(connections[i]==connections[j]){continue;}
+            int j=0;
+            for(; j < *connection_count; j++){
+                printf("Writing to %d",j);
+                //if(connections[i]==connections[j]){continue;}
+                int byteswritten = write(connections[i], bufRec, 32);
+                printf("Bytes written: %d",byteswritten);
                 //send message we just read back out to every other connection
                 //write(connections[j], , );
             }
+            free(bufRec);
 
 
         }
