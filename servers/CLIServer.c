@@ -21,8 +21,8 @@ typedef struct {
 
 // Function to initialize the CLIServer
 static void initializeCLIServer() {
-
-        // Create a shared memory region
+    fd_set read_fds, master_fds;
+    // Create a shared memory region
     int *connection_count = mmap(NULL, sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
     int *connections = mmap(NULL, 32 * sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
     
@@ -95,30 +95,41 @@ static void initializeCLIServer() {
 		fprintf(stderr, "Error in listen: %s\n", strerror(errno));
 		exit(EXIT_FAILURE);
 	}
-    //TODO fork this so that the server can continue to listen for connections while also allowing the user to input commands.
-    pid_t child_pid = fork();
-    if(child_pid == 0){
-        int connectioncountlocal = 10;
         while(1){
-            int connection;
-            printf("Child process created\n");
-            printf("Calling accept\n");
-            connection = accept(sfd, NULL, NULL);
+    read_fds = master_fds;
+
+        // Use select to check for available sockets
+        if (select(FD_SETSIZE, &read_fds, NULL, NULL, NULL) < 0) {
+            perror("Select error");
+            exit(EXIT_FAILURE);
+        }
+
+        // Check for new connection
+        if (FD_ISSET(sfd, &read_fds)) {
+            int connection = accept(sfd, NULL, NULL);
+
             if (connection < 0) {
-                fprintf(stderr, "Error in accept: %s\n", strerror(errno));
-                exit(EXIT_FAILURE);
+                if (errno == EWOULDBLOCK || errno == EAGAIN) {
+                    // No incoming connections, continue the loop
+                    continue;
+                } else {
+                    perror("Accept failed");
+                    exit(EXIT_FAILURE);
+                }
             }
 
-            printf("Accepted %d\n ",connection);
-            connections[*connection_count] = connection;
-            *connection_count = *connection_count  + 1;
-            
-            printf("Connected count amount: %d \n",*connection_count);
+            printf("Accepted %d\n", connection);
+            connections[connection_count] = connection;
+            connection_count++;
+
+            printf("Connected count amount: %d\n", connection_count);
+
+            // Add the new socket to the master set
+            FD_SET(connection, &master_fds);
         }
-    }
 	
 
-    while(1){
+
        //* Do the ping-pong thing */
        //for each connection do this:
        printf("Connected to clients: %d \n",*connection_count);
