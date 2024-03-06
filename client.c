@@ -55,15 +55,14 @@ int main(int argumentCount, char *arguments[])
     pid_t parent_pid = getpid();
     pid_t child_pid = fork();
     //if child, send through socket.receive
+    printf("File descriptor: %d\n", socket.sfd);
     if (child_pid == 0) {
         printf("pid: %d", child_pid);
-        socket.send(&socket,"After fork before receive",32);
-
-        // socket.receive(&socket);
+        printf("File descriptor child sees: %d\n", socket.sfd);
+        socket.receive(&socket);
         exit(0);
     }
-
-    socket.send(&socket,"After fork no recieve",32);
+    printf("File descriptor afte: %d\n", socket.sfd);
     
     char message[32];
     // //While the user input is not "exit", continue asking for their next message
