@@ -39,7 +39,8 @@ static void initializeCLIServer() {
     *connection_count = 0;
 
     // Initialize the shared array
-    for (int i = 0; i < MAX_CONNECTIONS; ++i) {
+    int i = 0;
+    for (; i < 32; ++i) {
         connections[i] = 0;
     }
     // Initialization logic specific to CLIServer
