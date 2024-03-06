@@ -79,12 +79,12 @@ static void initializeCLIServer() {
 		fprintf(stderr, "Error in listen: %s\n", strerror(errno));
 		exit(EXIT_FAILURE);
 	}
-        while(1){
+    while(1){
         read_fds = master_fds;
 
         // Use select to check for available sockets
         if (select(FD_SETSIZE, &read_fds, NULL, NULL, NULL) < 0) {
-            perror("Select error");
+            //perror("Select error");
         }else{
 
         // Check for new connection
