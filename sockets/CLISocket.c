@@ -97,11 +97,11 @@ static int Socket_receive(void *self) {
     while(true){
         //TODO fork into read loop.
         //pthread lock then unlock after finishing read
-        char             buf[32] = "\n";
+        char             buf[32];
         bytes = read(clisocket->sfd, buf, 5);       // Read the response from the server
-        // if(bytes>0){
+        if(bytes>0){
         printf("PID: %d; client received %s\n", getpid(), buf);
-        // }
+        }
         // Sleep for a short duration to avoid busy-waiting
         usleep(1000000);  // milliseconds
         }
