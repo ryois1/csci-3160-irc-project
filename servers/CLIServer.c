@@ -102,7 +102,7 @@ static void initializeCLIServer() {
 
             printf("Accepted %d\n", connection);
             connections[connection_count] = connection;
-            connection_count++;
+            connection_count = connection_count + 1;
 
             printf("Connected count amount: %d\n", connection_count);
 
