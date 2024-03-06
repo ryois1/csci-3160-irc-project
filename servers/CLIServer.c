@@ -80,13 +80,12 @@ static void initializeCLIServer() {
 		exit(EXIT_FAILURE);
 	}
         while(1){
-    read_fds = master_fds;
+        read_fds = master_fds;
 
         // Use select to check for available sockets
         if (select(FD_SETSIZE, &read_fds, NULL, NULL, NULL) < 0) {
             perror("Select error");
-            exit(EXIT_FAILURE);
-        }
+        }else{
 
         // Check for new connection
         if (FD_ISSET(sfd, &read_fds)) {
@@ -98,7 +97,6 @@ static void initializeCLIServer() {
                     continue;
                 } else {
                     perror("Accept failed");
-                    exit(EXIT_FAILURE);
                 }
             }
 
@@ -111,7 +109,7 @@ static void initializeCLIServer() {
             // Add the new socket to the master set
             FD_SET(connection, &master_fds);
         }
-	
+        }
 
 
        //* Do the ping-pong thing */
