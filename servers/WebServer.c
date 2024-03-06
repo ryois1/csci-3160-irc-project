@@ -11,7 +11,7 @@ typedef struct {
 } WebServer;
 
 // Function to initialize the WebServer
-static void initializeWebServer(void) {
+static void initializeWebServer(int* count) {
     // Initialization logic specific to WebServer
     //Green
     printf("\x1B[32m   Initializing Web Server... \n\033[0m");

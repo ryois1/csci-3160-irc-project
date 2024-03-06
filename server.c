@@ -25,8 +25,8 @@ int main() {
     cliserver.bind("localhost",8888);
 
 
-
-    webserver.initialize();
+    //TODO GIVE THIS ITS OWN COUNT!!!!!!
+    webserver.initialize(&global_connections_over_socket);
     webserver.bind("localhost",80);
 
     // Create a string to store server user input

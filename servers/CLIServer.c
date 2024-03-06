@@ -21,7 +21,7 @@ typedef struct {
 } CLIServer;
 
 // Function to initialize the CLIServer
-static void initializeCLIServer(void,int & connection_count) {
+static void initializeCLIServer(int* connection_count) {
     // Initialization logic specific to CLIServer
     printf("\x1B[32m   Initializing CLI Server... \n\033[0m");
 
@@ -79,39 +79,39 @@ static void initializeCLIServer(void,int & connection_count) {
     pid_t child_pid = fork();
     if(child_pid == 0){
         while(1){
-        int connection;
-        printf("Child process created\n");
-        printf("Calling accept\n");
-	    connection = accept(sfd, NULL, NULL);
-	    if (connection < 0) {
-            fprintf(stderr, "Error in accept: %s\n", strerror(errno));
-            exit(EXIT_FAILURE);
-	    }
+            int connection;
+            printf("Child process created\n");
+            printf("Calling accept\n");
+            connection = accept(sfd, NULL, NULL);
+            if (connection < 0) {
+                fprintf(stderr, "Error in accept: %s\n", strerror(errno));
+                exit(EXIT_FAILURE);
+            }
 
-        printf("Accepted %d\n ",connection);
-        connections[connection_count] = connection;
-        ++connection_count;
-        printf("Connected: %d \n",connection_count);
-    }
+            printf("Accepted %d\n ",connection);
+            //connections[connection_count] = connection;
+            ++*connection_count;
+            printf("Connected: %d \n",*connection_count);
+        }
     }
 	
 
     while(1){
         /* Do the ping-pong thing */
         //for each connection do this:
-        printf("Connected: %d \n",connection_count);
+        // printf("Connected: %d \n",*connection_count);
         usleep(1000000);  // milliseconds
 
-        for(int i = 0; i < connection_count; i++){
-            fcntl(connections[i], F_SETFL, SOCK_NONBLOCK); //non blocking read
-            read(connections[i], bufRec, 32);
-            printf("PID: %d; server received %s\n", getpid(), bufRec);
-            // read(connection, buf, 5);
-            // printf("PID: %d; server received %s\n", getpid(), buf);
-            strcpy(buf, "pong");
-            printf("Server writes %s\n", buf);
-            write(connections[i], buf, 5);
-        }
+        // for(int i = 0; i < *connection_count; i++){
+        //     fcntl(connections[i], F_SETFL, SOCK_NONBLOCK); //non blocking read
+        //     read(connections[i], bufRec, 32);
+        //     printf("PID: %d; server received %s\n", getpid(), bufRec);
+        //     // read(connection, buf, 5);
+        //     // printf("PID: %d; server received %s\n", getpid(), buf);
+        //     strcpy(buf, "pong");
+        //     printf("Server writes %s\n", buf);
+        //     write(connections[i], buf, 5);
+        // }
 
     }
     free(connections);
