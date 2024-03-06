@@ -21,7 +21,18 @@ typedef struct {
 } CLIServer;
 
 // Function to initialize the CLIServer
-static void initializeCLIServer(int* connection_count) {
+static void initializeCLIServer() {
+
+        // Create a shared memory region
+    int *connection_count = mmap(NULL, sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+    if (connection_count == MAP_FAILED) {
+        perror("mmap");
+        exit(EXIT_FAILURE);
+    }
+
+    // Initialize the shared variable
+    *connection_count = 0;
+    
     // Initialization logic specific to CLIServer
     printf("\x1B[32m   Initializing CLI Server... \n\033[0m");
 

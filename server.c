@@ -8,7 +8,6 @@
 #include "servers/WebServer.c"
 #include "servers/CLIServer.c"
 
-int global_connections_over_socket = 0;
 
 int main() {
     //Clears the screen because fuck making a standardized clear screen method cross platform :)
@@ -21,12 +20,12 @@ int main() {
     //Add variable called messages that both servers have access too, it should be atomic (think our most recent lab)
     //Add a list of ISocket, that both have access to, then when one recieves a message it can simply go through the list and forward the message to the other sockets.
 
-    cliserver.initialize(&global_connections_over_socket);
+    cliserver.initialize();
     cliserver.bind("localhost",8888);
 
 
     //TODO GIVE THIS ITS OWN COUNT!!!!!!
-    webserver.initialize(&global_connections_over_socket);
+    webserver.initialize();
     webserver.bind("localhost",80);
 
     // Create a string to store server user input
