@@ -23,8 +23,8 @@ typedef struct {
 static void initializeCLIServer() {
     fd_set read_fds, master_fds;
     // Create a shared memory region
-    int connection_count[32];
-    int connections = 0;
+    int connection_count = 0;
+    int connections[32];
 
     // Initialize the shared variable
     *connection_count = 0;
