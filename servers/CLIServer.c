@@ -26,9 +26,6 @@ static void initializeCLIServer() {
     int connection_count = 0;
     int connections[32];
 
-    // Initialize the shared variable
-    *connection_count = 0;
-
 
     // Initialization logic specific to CLIServer
     printf("\x1B[32m   Initializing CLI Server... \n\033[0m");
