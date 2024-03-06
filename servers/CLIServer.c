@@ -79,6 +79,11 @@ static void initializeCLIServer() {
 		fprintf(stderr, "Error in listen: %s\n", strerror(errno));
 		exit(EXIT_FAILURE);
 	}
+
+       // Initialize file descriptor sets
+    FD_ZERO(&master_fds);
+    FD_SET(sfd, &master_fds);
+
     while(1){
         read_fds = master_fds;
 
