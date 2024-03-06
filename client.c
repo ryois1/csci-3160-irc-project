@@ -46,6 +46,9 @@ int main(int argumentCount, char *arguments[])
 
     
     socket.send(&socket,"BEFORE FORK",32);
+    socket.send(&socket,"BEFORE FORK",32);
+    socket.send(&socket,"BEFORE FORK",32);
+    socket.send(&socket,"BEFORE FORK",32);
 
     //Fork here, call recieve
     //create child, send child through socket.receive
