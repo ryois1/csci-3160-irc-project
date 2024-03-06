@@ -78,6 +78,7 @@ static void initializeCLIServer(int* connection_count) {
     //TODO fork this so that the server can continue to listen for connections while also allowing the user to input commands.
     pid_t child_pid = fork();
     if(child_pid == 0){
+        int connectioncountlocal = 0x00;
         while(1){
             int connection;
             printf("Child process created\n");
@@ -90,8 +91,9 @@ static void initializeCLIServer(int* connection_count) {
 
             printf("Accepted %d\n ",connection);
             //connections[connection_count] = connection;
-            ++*connection_count;
-            printf("Connected: %d \n",*connection_count);
+            *connection_count = *connection_count  + 1;
+            // ++connectioncountlocal;
+            printf("Connected count amount: %d \n",connectioncountlocal);
         }
     }
 	
