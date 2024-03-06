@@ -6,7 +6,7 @@
 // Define the IServerSocket interface
 typedef struct {
     // Method to initialize the server socket
-    void (*initialize)(void);
+    void (*initialize,int & globalcount)(void);
 
     // Method to bind the server socket to a specific address and port
     int (*bind)(const char* address, int port);

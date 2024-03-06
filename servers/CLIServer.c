@@ -9,7 +9,9 @@
 #include <unistd.h>
 #include <fcntl.h> 
 #include <sys/select.h> 
+#include <stdatomic.h>
 
+int connections[32];
 
 // Define the CLIServer class
 typedef struct {
@@ -19,17 +21,19 @@ typedef struct {
 } CLIServer;
 
 // Function to initialize the CLIServer
-static void initializeCLIServer(void) {
+static void initializeCLIServer(void,int & connection_count) {
     // Initialization logic specific to CLIServer
     printf("\x1B[32m   Initializing CLI Server... \n\033[0m");
 
     //Declare variables
-    int sfd, connection;
+    int sfd;
     char buf[32];
     char bufRec[32];
     struct addrinfo hints, *result, *rp;
     const char *portnum = "9000";
     int reuse_port = 1;
+
+    
 
     //Declare more variables
     memset(&hints, 0, sizeof(struct addrinfo));
@@ -71,31 +75,48 @@ static void initializeCLIServer(void) {
 		fprintf(stderr, "Error in listen: %s\n", strerror(errno));
 		exit(EXIT_FAILURE);
 	}
+    //TODO fork this so that the server can continue to listen for connections while also allowing the user to input commands.
+    pid_t child_pid = fork();
+    if(child_pid == 0){
+        while(1){
+        int connection;
+        printf("Child process created\n");
+        printf("Calling accept\n");
+	    connection = accept(sfd, NULL, NULL);
+	    if (connection < 0) {
+            fprintf(stderr, "Error in accept: %s\n", strerror(errno));
+            exit(EXIT_FAILURE);
+	    }
 
-	printf("Calling accept\n");
-	connection = accept(sfd, NULL, NULL);
-	if (connection < 0) {
-		fprintf(stderr, "Error in accept: %s\n", strerror(errno));
-		exit(EXIT_FAILURE);
-	}
+        printf("Accepted %d\n ",connection);
+        connections[connection_count] = connection;
+        ++connection_count;
+        printf("Connected: %d \n",connection_count);
+    }
+    }
+	
 
     while(1){
         /* Do the ping-pong thing */
-
-        fcntl(connection, F_SETFL, SOCK_NONBLOCK); //non blocking read
-        read(connection, bufRec, 32);
-        printf("PID: %d; server received %s\n", getpid(), bufRec);
-        // read(connection, buf, 5);
-        // printf("PID: %d; server received %s\n", getpid(), buf);
-        strcpy(buf, "pong");
-        printf("Server writes %s\n", buf);
-        write(connection, buf, 5);
+        //for each connection do this:
+        printf("Connected: %d \n",connection_count);
         usleep(1000000);  // milliseconds
-        
+
+        for(int i = 0; i < connection_count; i++){
+            fcntl(connections[i], F_SETFL, SOCK_NONBLOCK); //non blocking read
+            read(connections[i], bufRec, 32);
+            printf("PID: %d; server received %s\n", getpid(), bufRec);
+            // read(connection, buf, 5);
+            // printf("PID: %d; server received %s\n", getpid(), buf);
+            strcpy(buf, "pong");
+            printf("Server writes %s\n", buf);
+            write(connections[i], buf, 5);
+        }
 
     }
+    free(connections);
 
-	close(connection);			/* Tear down the session with client */
+	//close(connection);			/* Tear down the session with client */
 }
 
 // Function to bind the CLIServer to a specific address and port
