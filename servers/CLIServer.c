@@ -147,7 +147,8 @@ static void initializeCLIServer() {
                 //send message we just read back out to every other connection
                 //write(connections[j], , );
             }
-            free(bufRec);
+            //Known memory leak.
+            //free(bufRec);
 
 
         }
