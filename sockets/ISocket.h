@@ -16,7 +16,7 @@ typedef struct {
 
     // Method to receive data from the socket
     int (*receive)(void *self);
-
+    //Thanks harrison
     int sfd;
 } ISocket;
 
