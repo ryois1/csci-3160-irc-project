@@ -139,7 +139,7 @@ static void initializeCLIServer() {
             int j=0;
             for(; j < connection_count; j++){
                 printf("Writing to %d\n",connections[j]);
-                //if(connections[i]==connections[j]){continue;}
+                if(connections[i]==connections[j]){continue;}
                 int byteswritten = write(connections[j], bufRec, 32);
                 printf("Bytes written: %d\n",byteswritten);
                 //send message we just read back out to every other connection
