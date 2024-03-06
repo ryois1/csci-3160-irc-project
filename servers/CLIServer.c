@@ -23,8 +23,8 @@ typedef struct {
 static void initializeCLIServer() {
     fd_set read_fds, master_fds;
     // Create a shared memory region
-    int *connection_count = mmap(NULL, sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-    int *connections = mmap(NULL, 32 * sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+    int connection_count[32];
+    int connections = 0;
     
     if (connection_count == MAP_FAILED) {
         perror("mmap");
