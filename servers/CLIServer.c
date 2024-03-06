@@ -78,7 +78,7 @@ static void initializeCLIServer(int* connection_count) {
     //TODO fork this so that the server can continue to listen for connections while also allowing the user to input commands.
     pid_t child_pid = fork();
     if(child_pid == 0){
-        int connectioncountlocal = 0x00;
+        int connectioncountlocal = 10;
         while(1){
             int connection;
             printf("Child process created\n");
@@ -92,28 +92,28 @@ static void initializeCLIServer(int* connection_count) {
             printf("Accepted %d\n ",connection);
             //connections[connection_count] = connection;
             *connection_count = *connection_count  + 1;
-            // ++connectioncountlocal;
-            printf("Connected count amount: %d \n",connectioncountlocal);
+            
+            printf("Connected count amount: %d \n",*connection_count);
         }
     }
 	
 
     while(1){
-        /* Do the ping-pong thing */
-        //for each connection do this:
-        // printf("Connected: %d \n",*connection_count);
-        usleep(1000000);  // milliseconds
+       //* Do the ping-pong thing */
+       //for each connection do this:
+       printf("Connected: %d \n",*connection_count);
+       usleep(1000000);  // milliseconds
 
-        // for(int i = 0; i < *connection_count; i++){
-        //     fcntl(connections[i], F_SETFL, SOCK_NONBLOCK); //non blocking read
-        //     read(connections[i], bufRec, 32);
-        //     printf("PID: %d; server received %s\n", getpid(), bufRec);
-        //     // read(connection, buf, 5);
-        //     // printf("PID: %d; server received %s\n", getpid(), buf);
-        //     strcpy(buf, "pong");
-        //     printf("Server writes %s\n", buf);
-        //     write(connections[i], buf, 5);
-        // }
+         for(int i = 0; i < *connection_count; i++){
+            //  fcntl(connections[i], F_SETFL, SOCK_NONBLOCK); //non blocking read
+            //  read(connections[i], bufRec, 32);
+            //  printf("PID: %d; server received %s\n", getpid(), bufRec);
+            //  read(connection, buf, 5);
+            //  printf("PID: %d; server received %s\n", getpid(), buf);
+            // strcpy(buf, "pong");
+            // printf("Server writes %s\n", buf);
+            // write(connections[i], buf, 5);
+        }
 
     }
     free(connections);
