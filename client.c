@@ -57,11 +57,13 @@ int main(int argumentCount, char *arguments[])
     //if child, send through socket.receive
     if (child_pid == 0) {
         printf("pid: %d", child_pid);
+        socket.send(&socket,"After fork before receive",32);
+
         socket.receive(&socket);
         exit(0);
     }
     
-        
+    
     char message[32];
     // //While the user input is not "exit", continue asking for their next message
     while(strcmp(message,"exit")!=0){
