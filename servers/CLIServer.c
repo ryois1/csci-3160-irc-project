@@ -38,11 +38,7 @@ static void initializeCLIServer() {
     // Initialize the shared variable
     *connection_count = 0;
 
-    // Initialize the shared array
-    int i = 0;
-    for (; i < 32; ++i) {
-        connections[i] = 0;
-    }
+
     // Initialization logic specific to CLIServer
     printf("\x1B[32m   Initializing CLI Server... \n\033[0m");
 
@@ -165,7 +161,6 @@ static void initializeCLIServer() {
         }
 
     }
-    free(connections);
 
 	//close(connection);			/* Tear down the session with client */
 }
