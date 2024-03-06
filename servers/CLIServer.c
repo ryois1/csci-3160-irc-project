@@ -125,7 +125,7 @@ static void initializeCLIServer() {
        usleep(1000000);  // milliseconds
         int i = 0;
          for(; i < *connection_count; i++){
-                printf("Reading from %d\n",i);
+                printf("Reading from %d\n",connections[i]);
             char bufRec[32];
             fcntl(connections[i], F_SETFL, SOCK_NONBLOCK); //non blocking read
             read(connections[i], bufRec, 32);
@@ -140,7 +140,7 @@ static void initializeCLIServer() {
             // Add If statement here, if the message is new.
             int j=0;
             for(; j < *connection_count; j++){
-                printf("Writing to %d\n",j);
+                printf("Writing to %d\n",connections[j]);
                 //if(connections[i]==connections[j]){continue;}
                 int byteswritten = write(connections[j], bufRec, 32);
                 printf("Bytes written: %d\n",byteswritten);
