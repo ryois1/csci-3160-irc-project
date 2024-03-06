@@ -25,15 +25,6 @@ static void initializeCLIServer() {
     // Create a shared memory region
     int connection_count[32];
     int connections = 0;
-    
-    if (connection_count == MAP_FAILED) {
-        perror("mmap");
-        exit(EXIT_FAILURE);
-    }
-        if (connections == MAP_FAILED) {
-        perror("mmap");
-        exit(EXIT_FAILURE);
-    }
 
     // Initialize the shared variable
     *connection_count = 0;
@@ -128,10 +119,10 @@ static void initializeCLIServer() {
 
        //* Do the ping-pong thing */
        //for each connection do this:
-       printf("Connected to clients: %d \n",*connection_count);
+       printf("Connected to clients: %d \n",connection_count);
        usleep(1000000);  // milliseconds
         int i = 0;
-         for(; i < *connection_count; i++){
+         for(; i < connection_count; i++){
                 printf("Reading from %d\n",connections[i]);
             char bufRec[32];
             fcntl(connections[i], F_SETFL, SOCK_NONBLOCK); //non blocking read
@@ -146,7 +137,7 @@ static void initializeCLIServer() {
 
             // Add If statement here, if the message is new.
             int j=0;
-            for(; j < *connection_count; j++){
+            for(; j < connection_count; j++){
                 printf("Writing to %d\n",connections[j]);
                 //if(connections[i]==connections[j]){continue;}
                 int byteswritten = write(connections[j], bufRec, 32);
