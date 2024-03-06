@@ -113,6 +113,15 @@ static void initializeCLIServer(int* connection_count) {
             // strcpy(buf, "pong");
             // printf("Server writes %s\n", buf);
             // write(connections[i], buf, 5);
+
+            // Add If statement here, if the message is new.
+            for(int j = 0; j < *connection_count; j++){
+                if(connections[i]==connections[j]){continue;}
+                //send message we just read back out to every other connection
+                //write(connections[j], , );
+            }
+
+
         }
 
     }
