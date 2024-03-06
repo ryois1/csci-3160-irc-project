@@ -44,6 +44,9 @@ int main(int argumentCount, char *arguments[])
     ISocket socket = cliSocketInstance.base;
     socket.open(&socket);
 
+    
+    socket.send(&socket,"BEFORE FORK",32);
+
     //Fork here, call recieve
     //create child, send child through socket.receive
     pid_t parent_pid = getpid();
