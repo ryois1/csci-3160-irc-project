@@ -146,7 +146,7 @@ static void initializeCLIServer() {
             }
             //Known memory leak.
             //free(bufRec);
-            memset(bufRec,"\0",32)
+            memset(bufRec,"\0",32);
 
 
         }
