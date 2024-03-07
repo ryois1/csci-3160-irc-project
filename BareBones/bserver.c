@@ -105,6 +105,7 @@ void processmessages(){
         int reading = read(connections[i], bufRec, 32);
         if(reading<=0)continue;
         printf("Relaying message for: %d\n",connections[i]);
+        
         //Relay Message
         int j=0;
         for(; j < connection_count; j++){
