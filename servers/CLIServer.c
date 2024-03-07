@@ -83,20 +83,14 @@ static void initializeCLIServer() {
     while(1){
             int connection = accept(sfd, NULL, NULL);
 
-            if (connection < 0) {
-                if (errno == EWOULDBLOCK || errno == EAGAIN) {
-                    // No incoming connections, continue the loop
-                    continue;
-                } else {
-                    perror("Accept failed");
-                }
+            if (connection != -1) {
+                printf("Accepted %d\n", connection);
+                connections[connection_count] = connection;
+                connection_count = connection_count + 1;
+
+                printf("Connected count amount: %d\n", connection_count);
             }
 
-            printf("Accepted %d\n", connection);
-            connections[connection_count] = connection;
-            connection_count = connection_count + 1;
-
-            printf("Connected count amount: %d\n", connection_count);
 
 
 
