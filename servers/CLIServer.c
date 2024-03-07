@@ -126,8 +126,6 @@ static void initializeCLIServer() {
             char bufRec[32];
             fcntl(connections[i], F_SETFL, SOCK_NONBLOCK); //non blocking read
             read(connections[i], bufRec, 32);
-            
-            FD_CLR(connections[i], &master_fds);
 
             //  printf("PID: %d; server received %s\n", getpid(), bufRec);
             //  read(connection, buf, 5);
