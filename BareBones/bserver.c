@@ -89,9 +89,8 @@ void acceptconnect(int file){
 
     if (connection >0) {
         printf("Accepted %d\n", connection);
+        ++connection_count;
         connections[connection_count] = connection;
-        connection_count = connection_count + 1;
-
         printf("Connected count amount: %d\n", connection_count);
     }
 }
