@@ -99,6 +99,7 @@ static int Socket_receive(void *self) {
         //pthread lock then unlock after finishing read
         char             buf[128];
         bytes = read(clisocket->sfd, buf, 5);       // Read the response from the server
+        fflush(clisocket);
         if(bytes>0){
         printf("PID: %d; client received %s\n", getpid(), buf);
         }

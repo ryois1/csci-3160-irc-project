@@ -83,7 +83,6 @@ static void initializeCLIServer() {
        // Initialize file descriptor sets
     FD_ZERO(&master_fds);
     FD_SET(sfd, &master_fds);
-
     while(1){
         read_fds = master_fds;
 
@@ -127,6 +126,7 @@ static void initializeCLIServer() {
             char bufRec[32];
             fcntl(connections[i], F_SETFL, SOCK_NONBLOCK); //non blocking read
             read(connections[i], bufRec, 32);
+            fflush(connections[i]);
 
             //  printf("PID: %d; server received %s\n", getpid(), bufRec);
             //  read(connection, buf, 5);
