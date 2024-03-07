@@ -43,7 +43,10 @@ static void initializeCLIServer() {
     hints.ai_family = AF_UNSPEC;    /* Allow IPv4 or IPv6 */
     hints.ai_socktype = SOCK_STREAM; /* TCP socket */
     hints.ai_flags = AI_PASSIVE;     /* For wildcard IP address */
-
+    hints.ai_protocol = IPPROTO_TCP;          /* Any protocol */
+    hints.ai_canonname = NULL;
+    hints.ai_addr = NULL;
+    hints.ai_next = NULL;
 
     //Get the address
     int s = getaddrinfo(NULL, portnum, &hints, &result);
