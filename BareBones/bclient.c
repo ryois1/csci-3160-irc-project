@@ -13,6 +13,7 @@
 #include <fcntl.h>
 int startconnect();
 void checkrecieve(int file);
+void sendhello(int file);
 int main() {
     //Clears the screen
     printf("\e[1;1H\e[2J");
@@ -20,6 +21,7 @@ int main() {
     int file =startconnect();
     while(1){
         checkrecieve(file);
+        sendhello(file);
     }
 
 }
@@ -76,4 +78,11 @@ void checkrecieve(int file){
     int reading = read(file, bufRec, 32);
     if(reading<=0)return;
     printf("received %s\n", bufRec);
+}
+
+void sendhello(int file){
+    int byteswritten = write(file, "hello", 32);
+    if(byteswritten <= 0){
+        print("Error writing bytes.")
+    }
 }

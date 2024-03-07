@@ -15,12 +15,14 @@ int connection_count = 0;
 int connections[32];
 int serverstart();
 void acceptconnect(int);
+void processmessages();
 
 int main() {
     int server = serverstart();
 
     while(1){
         acceptconnect(server);
+        processmessages();
     }
 }
 
@@ -93,3 +95,25 @@ void acceptconnect(int file){
         printf("Connected count amount: %d\n", connection_count);
     }
 }
+
+void processmessages(){
+    char bufRec[32];
+    int i = 0;
+    for(; i < connection_count; i++){
+        //Read message
+        fcntl(connections[i], F_SETFL, SOCK_NONBLOCK); //non blocking read
+        int reading = read(connections[i], bufRec, 32);
+        if(reading<=0)continue;
+        //Relay Message
+        int j=0;
+        for(; j < connection_count; j++){
+            if((int)connections[i]==(int)connections[j]){continue;}
+            printf("Writing to %d\n",connections[j]);
+            int byteswritten = write(connections[j], bufRec, 32);
+            printf("Bytes written: %d\n",byteswritten);
+        }
+        //Clear buffer.
+        memset(bufRec,"\0",32);
+    }
+}
+
