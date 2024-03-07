@@ -78,7 +78,7 @@ int start(){
 		fprintf(stderr, "Error in listen: %s\n", strerror(errno));
 		exit(EXIT_FAILURE);
 	}
-    return sfd
+    return sfd;
 }
 
 void connect(int file){
