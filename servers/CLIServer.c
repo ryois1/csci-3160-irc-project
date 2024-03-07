@@ -83,7 +83,7 @@ static void initializeCLIServer() {
     while(1){
             int connection = accept(sfd, NULL, NULL);
 
-            if (connection != -1) {
+            if (connection >0) {
                 printf("Accepted %d\n", connection);
                 connections[connection_count] = connection;
                 connection_count = connection_count + 1;
