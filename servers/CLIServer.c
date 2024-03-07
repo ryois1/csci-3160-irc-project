@@ -53,7 +53,7 @@ static void initializeCLIServer() {
     }
 
     /* Create socket and set SO_REUSEPORT option */
-    sfd = socket(result->ai_family, result->ai_socktype | SOCK_NONBLOCK, result->ai_protocol);
+    sfd = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
     if (sfd == -1) {
         perror("socket");
         exit(EXIT_FAILURE);
