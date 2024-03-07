@@ -99,7 +99,8 @@ static void initializeCLIServer() {
 
        //* Do the ping-pong thing */
        //for each connection do this:
-    //    printf("Connected clients: %d \n",connection_count);
+       printf("Connected clients: %d \n",connection_count);
+       usleep(1000000);  // milliseconds
         char bufRec[32];
         int i = 0;
          for(; i < connection_count; i++){
