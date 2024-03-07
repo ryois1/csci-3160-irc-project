@@ -30,7 +30,6 @@ int serverstart(){
 
     //Declare variables
     int sfd;
-    char buf[32];
     struct addrinfo hints, *result, *rp;
     const char *portnum = "9000";
     int reuse_port = 1;
@@ -84,7 +83,7 @@ int serverstart(){
 }
 
 void acceptconnect(int file){
-    int connection = accept(sfd, NULL, NULL);
+    int connection = accept(file, NULL, NULL);
 
     if (connection >0) {
         printf("Accepted %d\n", connection);
