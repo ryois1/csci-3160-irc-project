@@ -4,9 +4,9 @@ PTHREAD=-pthread
 
 all: server client
 
-server: server.c
+server: bserver.c
 	$(CC) $(CFLAGS) $(PTHREAD) -o server bserver.c 
-client: client.c
+client: bclient.c
 	$(CC) $(CFLAGS) $(PTHREAD) -o client bclient.c 
 
 clean:
