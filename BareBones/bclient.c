@@ -96,7 +96,7 @@ void checkrecieve(int file){
     }
     printf("\e[1;1H\e[2J");
     for(int i = 0;i<message_count;i++){
-        printf(": %s",messages[i]);
+        printf("\n: %s",messages[i]);
     }
     memset(bufRec,"\0",32);
 }
