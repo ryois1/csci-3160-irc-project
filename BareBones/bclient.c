@@ -53,7 +53,7 @@ int startconnect(){
 
     // Create a socket
     sfd = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
-    int connectresult = connect(clisocket->sfd, result->ai_addr, result->ai_addrlen);
+    int connectresult = connect(sfd, result->ai_addr, result->ai_addrlen);
     if (connectresult == -1) {
         fprintf(stderr, "socket: %s\n", strerror(errno));
         exit(EXIT_FAILURE);
