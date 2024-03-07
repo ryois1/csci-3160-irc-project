@@ -21,7 +21,6 @@ typedef struct {
 
 // Function to initialize the CLIServer
 static void initializeCLIServer() {
-    fd_set read_fds, master_fds;
     // Create a shared memory region
     int connection_count = 0;
     int connections[32];
@@ -42,7 +41,7 @@ static void initializeCLIServer() {
     //Declare more variables
     memset(&hints, 0, sizeof(struct addrinfo));
     hints.ai_family = AF_UNSPEC;    /* Allow IPv4 or IPv6 */
-    hints.ai_socktype = SOCK_STREAM; /* TCP socket */
+    hints.ai_socktype = SOCK_STREAM | SOCK_NONBLOCK; /* TCP socket */
     hints.ai_flags = AI_PASSIVE;     /* For wildcard IP address */
 
 
@@ -80,19 +79,8 @@ static void initializeCLIServer() {
 		exit(EXIT_FAILURE);
 	}
 
-       // Initialize file descriptor sets
-    FD_ZERO(&master_fds);
-    FD_SET(sfd, &master_fds);
+
     while(1){
-        read_fds = master_fds;
-
-        // Use select to check for available sockets
-        if (select(FD_SETSIZE, &read_fds, NULL, NULL, NULL) < 0) {
-            //perror("Select error");
-        }else{
-
-        // Check for new connection
-        if (FD_ISSET(sfd, &read_fds)) {
             int connection = accept(sfd, NULL, NULL);
 
             if (connection < 0) {
@@ -110,10 +98,6 @@ static void initializeCLIServer() {
 
             printf("Connected count amount: %d\n", connection_count);
 
-            // Add the new socket to the master set
-            FD_SET(connection, &master_fds);
-        }
-        }
 
 
        //* Do the ping-pong thing */
@@ -128,7 +112,7 @@ static void initializeCLIServer() {
             fcntl(connections[i], F_SETFL, SOCK_NONBLOCK); //non blocking read
             int reading = read(connections[i], bufRec, 32);
             printf("Read in %d\n",reading);
-            if(reading<=0)continue;
+            //if(reading<=0)continue;
             //  printf("PID: %d; server received %s\n", getpid(), bufRec);
             //  read(connection, buf, 5);
             //  printf("PID: %d; server received %s\n", getpid(), buf);
