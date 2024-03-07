@@ -81,7 +81,8 @@ void checkrecieve(int file){
 }
 
 void sendhello(int file){
-    int byteswritten = write(file, "hello", 32);
+    char words[32] = "hello\0";
+    int byteswritten = write(file,words , 32);
     if(byteswritten <= 0){
         printf("Error writing bytes.");
     }
