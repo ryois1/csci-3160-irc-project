@@ -14,6 +14,10 @@
 int startconnect();
 void checkrecieve(int file);
 void sendhello(int file);
+
+char *messages[20];
+int message_count =0;
+
 int main() {
     //Clears the screen
     printf("\e[1;1H\e[2J");
@@ -81,7 +85,19 @@ void checkrecieve(int file){
     fcntl(file, F_SETFL, SOCK_NONBLOCK); //non blocking read
     int reading = read(file, bufRec, 32);
     if(reading<=0)return;
-    printf("received %s\n", bufRec);
+    messages[message_count] = bufRec;
+
+    if(message_count<20){
+        message_count++;
+    }else{
+        for (int k = message_count; k > 0; k--){        
+            messages[k]=messages[k-1];
+        }
+    }
+    printf("\e[1;1H\e[2J");
+    for(int i = 0;i<message_count;i++){
+        printf(": %s",messages[i]);
+    }
 }
 
 void sendhello(int file){
