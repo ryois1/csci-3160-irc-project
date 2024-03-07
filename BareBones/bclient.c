@@ -10,7 +10,8 @@
 #include <errno.h>
 #include <netdb.h>
 #include <sys/types.h>
-
+int connect();
+void recieve(int file);
 int main() {
     //Clears the screen
     printf("\e[1;1H\e[2J");

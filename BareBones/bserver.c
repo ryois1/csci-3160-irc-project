@@ -13,6 +13,8 @@
 
 int connection_count = 0;
 int connections[32];
+int start();
+void connect(int);
 
 int main() {
     int server = start();
