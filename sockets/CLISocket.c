@@ -93,11 +93,15 @@ static int Socket_receive(void *self) {
     int              bytes;
     ssize_t          nread;
     CLISocket *clisocket = (CLISocket *)self;
+    char buf[32];
+    //Set first letter to empty.
+    buf[0] = '\0';
     //TODO pthread lock unlock so its not taking up all the time?
     while(true){
         //TODO fork into read loop.
         //pthread lock then unlock after finishing read
-        char             buf[32];
+
+ 
         bytes = read(clisocket->sfd, buf, 32);       // Read the response from the server
 
         if(bytes>0){
