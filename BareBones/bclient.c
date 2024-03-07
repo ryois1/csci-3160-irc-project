@@ -10,6 +10,7 @@
 #include <errno.h>
 #include <netdb.h>
 #include <sys/types.h>
+#include <fcntl.h>
 int startconnect();
 void checkrecieve(int file);
 int main() {
