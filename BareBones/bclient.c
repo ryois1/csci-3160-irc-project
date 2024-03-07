@@ -17,6 +17,7 @@ void sendhello(int file);
 
 char *messages[20];
 int message_count =0;
+int uselesscounter = 0;
 
 int main() {
     //Clears the screen
@@ -103,7 +104,8 @@ void checkrecieve(int file){
 
 void sendhello(int file){
     char words[32];
-    sprintf(words,"Hello from: %d",getpid());
+    sprintf(words,"Hello from: %d #%d",getpid(),uselesscounter);
+    ++uselesscounter;
     int byteswritten = write(file,words , 32);
     // if(byteswritten < 0){
     //     printf("Error writing bytes.");
