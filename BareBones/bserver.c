@@ -111,6 +111,9 @@ void processmessages(){
             if((int)connections[i]==(int)connections[j]){continue;}
             printf("Writing to %d\n",connections[j]);
             int byteswritten = write(connections[j], bufRec, 32);
+            if(byteswritten==-1){
+                //welp so long fellas the program breaks.
+            }
             printf("Bytes written: %d\n",byteswritten);
         }
         //Clear buffer.
