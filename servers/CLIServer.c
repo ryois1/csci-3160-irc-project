@@ -41,7 +41,7 @@ static void initializeCLIServer() {
     //Declare more variables
     memset(&hints, 0, sizeof(struct addrinfo));
     hints.ai_family = AF_UNSPEC;    /* Allow IPv4 or IPv6 */
-    hints.ai_socktype = SOCK_STREAM | SOCK_NONBLOCK; /* TCP socket */
+    hints.ai_socktype = SOCK_STREAM; /* TCP socket */
     hints.ai_flags = AI_PASSIVE;     /* For wildcard IP address */
 
 
@@ -53,7 +53,7 @@ static void initializeCLIServer() {
     }
 
     /* Create socket and set SO_REUSEPORT option */
-    sfd = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
+    sfd = socket(result->ai_family, result->ai_socktype | SOCK_NONBLOCK, result->ai_protocol);
     if (sfd == -1) {
         perror("socket");
         exit(EXIT_FAILURE);
