@@ -98,6 +98,7 @@ void checkrecieve(int file){
     for(int i = 0;i<message_count;i++){
         printf(": %s",messages[i]);
     }
+    memset(bufRec,"\0",32);
 }
 
 void sendhello(int file){
