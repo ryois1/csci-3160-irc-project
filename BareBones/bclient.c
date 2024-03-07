@@ -83,6 +83,6 @@ void checkrecieve(int file){
 void sendhello(int file){
     int byteswritten = write(file, "hello", 32);
     if(byteswritten <= 0){
-        print("Error writing bytes.")
+        print("Error writing bytes.");
     }
 }
