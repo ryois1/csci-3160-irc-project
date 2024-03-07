@@ -126,7 +126,7 @@ static void initializeCLIServer() {
             char bufRec[32];
             fcntl(connections[i], F_SETFL, SOCK_NONBLOCK); //non blocking read
             int reading = read(connections[i], bufRec, 32);
-            printf("Read in %d",reading);
+            printf("Read in %d\n",reading);
             //  printf("PID: %d; server received %s\n", getpid(), bufRec);
             //  read(connection, buf, 5);
             //  printf("PID: %d; server received %s\n", getpid(), buf);
@@ -146,6 +146,7 @@ static void initializeCLIServer() {
             }
             //Known memory leak.
             //free(bufRec);
+            memset(bufRec,"\0",32)
 
 
         }
