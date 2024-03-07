@@ -47,6 +47,9 @@ int startconnect(){
     hints.ai_socktype = SOCK_STREAM; /* TCP socket */
     hints.ai_flags = 0;
     hints.ai_protocol = IPPROTO_TCP; /* TCP */
+    hints.ai_canonname = NULL;
+    hints.ai_addr = NULL;
+    hints.ai_next = NULL;
 
     // Get the address from the variables
     if (getaddrinfo("127.0.0.1","9000", &hints, &result) != 0) {
