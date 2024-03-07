@@ -21,6 +21,7 @@ int main() {
     int file =startconnect();
     while(1){
         checkrecieve(file);
+        usleep(1000000);
         sendhello(file);
     }
 
