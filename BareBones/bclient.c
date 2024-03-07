@@ -84,7 +84,7 @@ void checkrecieve(int file){
 }
 
 void sendhello(int file){
-    char words[32] = concatenate("Hello from: ",toString(getpid()))
+    char words[32] = concatenate("Hello from: ",toString(getpid()));
     int byteswritten = write(file,words , 32);
     // if(byteswritten < 0){
     //     printf("Error writing bytes.");
