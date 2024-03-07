@@ -10,22 +10,22 @@
 #include <errno.h>
 #include <netdb.h>
 #include <sys/types.h>
-int connect();
-void recieve(int file);
+int startconnect();
+void checkrecieve(int file);
 int main() {
     //Clears the screen
     printf("\e[1;1H\e[2J");
 
-    int file =connect();
+    int file =startconnect();
     while(1){
-        recieve(file);
+        checkrecieve(file);
     }
 
 }
 
 
 
-int connect(){
+int startconnect(){
     int sfd;
 
     printf("Opening client socket cli.\n");
@@ -68,7 +68,7 @@ int connect(){
     return sfd;
 }
 
-void recieve(int file){
+void checkrecieve(int file){
     char bufRec[32];
     bufRec[0]='\0';
     fcntl(file, F_SETFL, SOCK_NONBLOCK); //non blocking read

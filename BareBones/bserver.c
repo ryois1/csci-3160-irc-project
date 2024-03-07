@@ -13,18 +13,18 @@
 
 int connection_count = 0;
 int connections[32];
-int start();
-void connect(int);
+int serverstart();
+void acceptconnect(int);
 
 int main() {
-    int server = start();
+    int server = serverstart();
 
     while(1){
-        connect(server);
+        acceptconnect(server);
     }
 }
 
-int start(){
+int serverstart(){
     // Initialization logic specific to CLIServer
     printf("\x1B[32m   Initializing CLI Server... \n\033[0m");
 
@@ -83,7 +83,7 @@ int start(){
     return sfd;
 }
 
-void connect(int file){
+void acceptconnect(int file){
     int connection = accept(sfd, NULL, NULL);
 
     if (connection >0) {
