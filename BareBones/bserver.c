@@ -12,7 +12,7 @@
 #include <sys/mman.h>
 
 int connection_count = 0;
-int connections[32];
+int connections[128];
 int serverstart();
 void acceptconnect(int);
 void processmessages();
@@ -90,34 +90,50 @@ void acceptconnect(int file){
     if (connection >0) {
         printf("Accepted %d\n", connection);
         connections[connection_count] = connection;
+        write(connections[connection_count],"\x1B[32m[SERVER]: Connected, use /help\0",128);
+        int j=0;
+        for(; j < connection_count; j++){
+            if((int)connections[connection_count]==(int)connections[j]){continue;}
+            write(connections[j],"\x1B[32m[SERVER]: Someone Joined.\0",128);
+        }
         ++connection_count;
         printf("Connected count amount: %d\n", connection_count);
     }
 }
 
 void processmessages(){
-    char bufRec[32];
+    char bufRec[128];
     int i = 0;
     for(; i < connection_count; i++){
         //Read message
         fcntl(connections[i], F_SETFL, SOCK_NONBLOCK); //non blocking read
-        int reading = read(connections[i], bufRec, 32);
+        int reading = read(connections[i], bufRec, 128);
         if(reading<=0)continue;
+
+        printf("\n");
+        printf(bufRec);
+        printf("\n");
+        // Check if the message contains ":help"
+        if (strstr(bufRec, "/help") != NULL) {
+            write(connections[i],"[SERVER]: No help for u :p\0",128);
+            continue;
+        }
+
         printf("Relaying message for: %d\n",connections[i]);
-        
         //Relay Message
         int j=0;
         for(; j < connection_count; j++){
             if((int)connections[i]==(int)connections[j]){continue;}
             printf("Writing to %d\n",connections[j]);
-            int byteswritten = write(connections[j], bufRec, 32);
+            int byteswritten = write(connections[j], bufRec, 128);
             if(byteswritten==-1){
                 //welp so long fellas the program breaks.
+                printf("%d has disconnected",i);
             }
             printf("Bytes written: %d\n",byteswritten);
         }
         //Clear buffer.
-        memset(bufRec,"\0",32);
+        memset(bufRec,"\0",128);
     }
 }
 
