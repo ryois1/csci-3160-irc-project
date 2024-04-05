@@ -76,7 +76,7 @@ int main() {
             waiting = true;
         }
 
-        usleep(1000000);
+        usleep(10000);
         // sendhello(file);
         handle_user_input(file);
     }
