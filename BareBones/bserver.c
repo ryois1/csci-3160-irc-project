@@ -10,6 +10,8 @@
 #include <sys/select.h> 
 #include <stdatomic.h>
 #include <sys/mman.h>
+#include <signal.h>
+
 
 int connection_count = 0;
 int connections[128];
@@ -19,7 +21,7 @@ void processmessages();
 
 int main() {
     int server = serverstart();
-
+    signal(SIGPIPE, SIG_IGN);
     while(1){
         acceptconnect(server);
         processmessages();
@@ -119,6 +121,8 @@ void processmessages(){
             continue;
         }
 
+        
+
         printf("Relaying message for: %d\n",connections[i]);
         //Relay Message
         int j=0;
@@ -126,9 +130,22 @@ void processmessages(){
             if((int)connections[i]==(int)connections[j]){continue;}
             printf("Writing to %d\n",connections[j]);
             int byteswritten = write(connections[j], bufRec, 128);
-            if(byteswritten==-1){
-                //welp so long fellas the program breaks.
-                printf("%d has disconnected",i);
+            if (byteswritten == -1) {
+                    // Connection closed by client
+                    printf("%d has disconnected\n", connections[j]);
+                    // Remove disconnected client
+                    close(connections[j]);
+                    for (int k = j; k < connection_count - 1; k++) {
+                        connections[k] = connections[k + 1];
+                    }
+                    connection_count--;
+                    j--; // Adjust index since a client is removed
+
+
+                    int y=0;
+                    for(; y < connection_count; y++){
+                        write(connections[y],"\x1B[32m[SERVER]: Someone Disconnected.\0",128);
+                    }
             }
             printf("Bytes written: %d\n",byteswritten);
         }

@@ -37,7 +37,7 @@ int main() {
 
 // Prompt user to enter chat color
     int colorChoice;
-    printf("Enter a number between 1-5 to choose chat color: ");
+    printf("Enter a number between 1-5 to choose chat color: \n");
     printf("1. Red\n");
     printf("2. Green\n");
     printf("3. Yellow\n");
